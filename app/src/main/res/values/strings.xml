@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BestToDo</string>
+    <string name="todoItemText">Add ToDo text here</string>
+    <string name="addTodoItemHint">Add new ToDo</string>
 </resources>
