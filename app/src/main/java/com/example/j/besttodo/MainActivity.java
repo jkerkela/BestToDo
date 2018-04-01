@@ -5,7 +5,7 @@ import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.support.design.widget.FloatingActionButton;
 
 
 public class MainActivity extends FragmentActivity {
@@ -16,8 +16,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: move image button to fragment
-        ImageButton imageButton = findViewById(R.id.addNewTodoItemButton);
+        FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
 
         if (savedInstanceState == null) {
             Fragment newFragment = new TodoListFragment();
@@ -25,7 +24,7 @@ public class MainActivity extends FragmentActivity {
             ft.add(R.id.listFragment, newFragment).commit();
         }
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: add new todo item to fragment

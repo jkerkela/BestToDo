@@ -11,21 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewTodoItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="14dp"
-        android:layout_marginEnd="13dp"
-        android:contentDescription="@string/todoItemText"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.951"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.965"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_margin="16dp"/>
 
 </RelativeLayout>

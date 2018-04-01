@@ -18,6 +18,7 @@ import java.util.List;
 
 public class TodoListFragment extends ListFragment {
 
+    //TODO: initiate list as empty, add items dynamically from button click
     List<String> todoItemsList = Arrays.asList("test", "test2");
 
     @Override
