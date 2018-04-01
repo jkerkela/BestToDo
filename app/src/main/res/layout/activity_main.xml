@@ -6,22 +6,10 @@
     android:layout_height="match_parent"
     tools:context="com.example.j.besttodo.MainActivity">
 
-    <fragment
-        android:id="@+id/todoListFragment"
+    <FrameLayout
+        android:id="@+id/listFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/addNewTodoItemButton"
-        android:layout_centerHorizontal="true"
-        android:text="TEMP_Main_Window"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.967" />
 
     <ImageButton
         android:id="@+id/addNewTodoItemButton"

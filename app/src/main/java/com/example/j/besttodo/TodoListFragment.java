@@ -10,28 +10,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class TodoListFragment extends ListFragment implements OnItemClickListener {
+import java.util.Arrays;
+import java.util.List;
 
-    String todoItemsList[];
+public class TodoListFragment extends ListFragment {
+
+    List<String> todoItemsList = Arrays.asList("test", "test2");
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.todo_list_fragment, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, todoItemsList);
+        ArrayAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, todoItemsList);
         setListAdapter(adapter);
-        getListView().setOnItemClickListener(this);
+        return super.onCreateView(inflater, container, savedInstanceState);
+
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
-    }
 }
