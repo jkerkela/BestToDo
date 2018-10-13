@@ -16,15 +16,23 @@ import java.util.List;
 public class TodoListFragment extends ListFragment {
 
     List<EditText> todoItemsList = new ArrayList<>();
-    ArrayAdapter arrayAdapter;
+    ArrayAdapter todoListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        arrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.editable_text_item, todoItemsList);
-        setListAdapter(arrayAdapter);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return inflater.inflate(R.layout.todo_list_fragment, container, false);
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        todoListAdapter = new ArrayAdapter<>(getActivity(), R.layout.editable_text_item, todoItemsList);
+        setListAdapter(todoListAdapter);
+        //TODO: editText needs to be @+id/todoItemText
+        EditText editText = new EditText(this.getContext());
+        todoItemsList.add(editText);
+        todoListAdapter.notifyDataSetChanged();
     }
 
     public List<EditText> getTodoList(){

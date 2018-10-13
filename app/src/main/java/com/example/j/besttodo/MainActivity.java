@@ -32,15 +32,20 @@ public class MainActivity extends FragmentActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayAdapter todoListAdapter = (ArrayAdapter) listFragment.getListAdapter();
-                List<EditText> currentTodoList = listFragment.getTodoList();
-                EditText editText = new EditText(getApplicationContext());
-                //TODO: this doesnt seem to add text to edittext
-                editText.setText(getResources().getString(R.string.todoItemText), TextView.BufferType.EDITABLE);
-                currentTodoList.add(editText);
-                todoListAdapter.notifyDataSetChanged();
+                addNewTodoItemToTodoItem(listFragment.getTodoList());
+                notifyTodoListAdapter((ArrayAdapter) listFragment.getListAdapter());
             }
         });
+    }
+
+    private void addNewTodoItemToTodoItem(List<EditText> currentTodoList){
+        //TODO: editText needs to be @+id/todoItemText
+        EditText editText = new EditText(this);
+        currentTodoList.add(editText);
+    }
+
+    private void notifyTodoListAdapter(ArrayAdapter todoListAdapter){
+        todoListAdapter.notifyDataSetChanged();
     }
 
 }
