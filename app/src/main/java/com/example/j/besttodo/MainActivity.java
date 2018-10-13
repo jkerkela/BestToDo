@@ -1,21 +1,20 @@
 package com.example.j.besttodo;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
-
     TodoListFragment listFragment;
     FragmentTransaction fragmentTransaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,15 +32,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 addNewTodoItemToTodoItem(listFragment.getTodoList());
-                notifyTodoListAdapter((ArrayAdapter) listFragment.getListAdapter());
+                ArrayAdapter listAdapter = (ArrayAdapter) listFragment.getListAdapter();
+                notifyTodoListAdapter(listAdapter);
             }
         });
     }
 
-    private void addNewTodoItemToTodoItem(List<EditText> currentTodoList){
-        //TODO: editText needs to be @+id/todoItemText
-        EditText editText = new EditText(this);
-        currentTodoList.add(editText);
+    private void addNewTodoItemToTodoItem(List<TodoItem> currentTodoList){
+        TodoItem todoItem = new TodoItem(getString(R.string.todoItemText));
+        currentTodoList.add(todoItem);
     }
 
     private void notifyTodoListAdapter(ArrayAdapter todoListAdapter){
