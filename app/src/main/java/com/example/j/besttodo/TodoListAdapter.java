@@ -16,10 +16,10 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
     private Activity mContext;
     private int mResourceLayout;
 
-    TodoListAdapter(@NonNull Activity context, int resource, @NonNull List<TodoItem> todoItemList) {
-        super(context, resource, todoItemList);
+    TodoListAdapter(@NonNull Activity context, int resourceLayout, @NonNull List<TodoItem> todoItemList) {
+        super(context, resourceLayout, todoItemList);
         mContext = context;
-        mResourceLayout = resource;
+        mResourceLayout = resourceLayout;
     }
 
     @NonNull
