@@ -1,7 +1,6 @@
 package com.example.j.besttodo;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +11,8 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity {
 
-    TodoListFragment listFragment;
-    FragmentTransaction fragmentTransaction;
+    TodoListFragment mListFragment = new TodoListFragment();
+    FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,28 +22,32 @@ public class MainActivity extends FragmentActivity {
         FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
 
         if (savedInstanceState == null) {
-            listFragment = new TodoListFragment();
-            fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.listFragment, listFragment).commit();
+            addFragment(mListFragment);
         }
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewTodoItemToTodoItem(listFragment.getTodoList());
-                ArrayAdapter listAdapter = (ArrayAdapter) listFragment.getListAdapter();
-                notifyTodoListAdapter(listAdapter);
+                List<TodoItem> todoList = mListFragment.getTodoList();
+                addNewTodoItemToTodoItemToList(todoList);
+                updateFragmentView(mListFragment);
             }
         });
     }
 
-    private void addNewTodoItemToTodoItem(List<TodoItem> currentTodoList){
+    private void addFragment(TodoListFragment listFragment) {
+        mFragmentTransaction = getFragmentManager().beginTransaction();
+        mFragmentTransaction.add(R.id.listFragment, listFragment).commit();
+    }
+
+    private void addNewTodoItemToTodoItemToList(List<TodoItem> currentTodoList){
         TodoItem todoItem = new TodoItem(getString(R.string.todoItemText));
         currentTodoList.add(todoItem);
     }
 
-    private void notifyTodoListAdapter(ArrayAdapter todoListAdapter){
-        todoListAdapter.notifyDataSetChanged();
+    private void updateFragmentView(TodoListFragment listFragment){
+        ArrayAdapter mlistAdapter = (ArrayAdapter) listFragment.getListAdapter();
+        mlistAdapter.notifyDataSetChanged();
     }
 
 }

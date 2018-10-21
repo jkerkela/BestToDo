@@ -9,16 +9,16 @@ import java.util.List;
 
 public class TodoListFragment extends ListFragment {
 
-    List<TodoItem> todoItemsList = new ArrayList<>();
+    List<TodoItem> mTodoItemsList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayAdapter<TodoItem> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.todo_item, todoItemsList);
+        ArrayAdapter<TodoItem> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.todo_item, mTodoItemsList);
         setListAdapter(todoListAdapter);
     }
 
     public List<TodoItem> getTodoList(){
-        return todoItemsList;
+        return mTodoItemsList;
     }
 }

@@ -30,7 +30,6 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
         }
 
         TodoItem todoItem = getItem(position);
-
         if (todoItem != null) {
             EditText todoItemDescription = listItem.findViewById(R.id.todoItemDescription);
             todoItemDescription.setText(todoItem.getDescription());
