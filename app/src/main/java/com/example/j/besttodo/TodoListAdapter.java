@@ -29,7 +29,7 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
 
         if(listItem == null) {
             LayoutInflater layoutInflater = mContext.getLayoutInflater();
-            listItem = layoutInflater.inflate(mResourceLayout, null, true);
+            listItem = layoutInflater.inflate(mResourceLayout, parent, false);
         }
 
         TodoItem todoItem = getItem(position);

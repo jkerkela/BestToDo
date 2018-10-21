@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.j.besttodo.MainActivity"
+    android:id="@+id/baseLayout"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <FrameLayout
+    <fragment
         android:id="@+id/listFragment"
+        android:name="com.example.j.besttodo.TodoListFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_height="wrap_content"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addNewTodoItemButton"

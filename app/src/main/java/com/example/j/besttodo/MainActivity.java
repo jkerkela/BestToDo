@@ -1,15 +1,18 @@
 package com.example.j.besttodo;
 
 import android.app.FragmentTransaction;
-import android.support.v4.app.FragmentActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     TodoListFragment mListFragment = new TodoListFragment();
     FragmentTransaction mFragmentTransaction;
@@ -18,13 +21,35 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
+        InitiateBaseFocusHolder();
+        InitiateToDoItemAdderButton();
 
         if (savedInstanceState == null) {
             addFragment(mListFragment);
         }
+    }
 
+    private void InitiateBaseFocusHolder() {
+        final RelativeLayout baseLayout = findViewById(R.id.baseLayout);
+        baseLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                baseLayout.requestFocus();
+                closeSoftKeyboard();
+            }
+        });
+    }
+
+    private void closeSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        View rootView = findViewById(android.R.id.content);
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
+        }
+    }
+
+    private void InitiateToDoItemAdderButton() {
+        FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
