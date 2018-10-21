@@ -14,7 +14,7 @@ public class TodoListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayAdapter<TodoItem> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.todo_item, mTodoItemsList);
+        ArrayAdapter<TodoItem> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.todo_list_row, mTodoItemsList);
         setListAdapter(todoListAdapter);
     }
 

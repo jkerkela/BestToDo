@@ -1,6 +1,6 @@
 package com.example.j.besttodo;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,11 +13,13 @@ import java.util.List;
 
 public class TodoListAdapter extends ArrayAdapter<TodoItem> {
 
-    private Context mContext;
+    private Activity mContext;
+    private int mResourceLayout;
 
-    TodoListAdapter(@NonNull Context context, int resource, @NonNull List<TodoItem> todoItemList) {
+    TodoListAdapter(@NonNull Activity context, int resource, @NonNull List<TodoItem> todoItemList) {
         super(context, resource, todoItemList);
         mContext = context;
+        mResourceLayout = resource;
     }
 
     @NonNull
@@ -26,7 +28,8 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
         View listItem = convertView;
 
         if(listItem == null) {
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.todo_item, parent, false);
+            LayoutInflater layoutInflater = mContext.getLayoutInflater();
+            listItem = layoutInflater.inflate(mResourceLayout, null, true);
         }
 
         TodoItem todoItem = getItem(position);
