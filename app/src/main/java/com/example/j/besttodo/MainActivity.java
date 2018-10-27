@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<TodoItem> todoList = mListFragment.getTodoList();
+                List<TodoItemFragment> todoList = mListFragment.getTodoList();
                 addNewTodoItemToTodoItemToList(todoList);
                 updateFragmentView(mListFragment);
             }
@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         mFragmentTransaction.add(R.id.listFragment, listFragment, "TodoListFragment").commit();
     }
 
-    private void addNewTodoItemToTodoItemToList(List<TodoItem> currentTodoList){
-        TodoItem todoItem = new TodoItem(getString(R.string.todoItemText));
-        currentTodoList.add(todoItem);
+    private void addNewTodoItemToTodoItemToList(List<TodoItemFragment> currentTodoList){
+        TodoItemFragment todoItemFragment = new TodoItemFragment();
+        currentTodoList.add(todoItemFragment);
     }
 
     private void updateFragmentView(TodoListFragment listFragment){

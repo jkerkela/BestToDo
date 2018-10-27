@@ -10,12 +10,12 @@ import android.widget.ArrayAdapter;
 
 import java.util.List;
 
-public class TodoListAdapter extends ArrayAdapter<TodoItem> {
+public class TodoListAdapter extends ArrayAdapter<TodoItemFragment> {
 
     private Activity mContext;
     private int mResourceLayout;
 
-    TodoListAdapter(@NonNull Activity context, int resourceLayout, @NonNull List<TodoItem> todoItemList) {
+    TodoListAdapter(@NonNull Activity context, int resourceLayout, @NonNull List<TodoItemFragment> todoItemList) {
         super(context, resourceLayout, todoItemList);
         mContext = context;
         mResourceLayout = resourceLayout;
@@ -24,14 +24,14 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItem = convertView;
+        View listView = convertView;
 
-        if(listItem == null) {
+        if(listView == null) {
             LayoutInflater layoutInflater = mContext.getLayoutInflater();
-            listItem = layoutInflater.inflate(mResourceLayout, parent, false);
+            listView = layoutInflater.inflate(mResourceLayout, parent, false);
         }
 
-        return listItem;
+        return listView;
     }
 
 }

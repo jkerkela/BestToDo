@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TodoListFragment extends ListFragment {
 
-    List<TodoItem> mTodoItemsList = new ArrayList<>();
+    List<TodoItemFragment> mTodoItemsList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -23,11 +23,11 @@ public class TodoListFragment extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ArrayAdapter<TodoItem> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.list_fragment_row, mTodoItemsList);
+        ArrayAdapter<TodoItemFragment> todoListAdapter = new TodoListAdapter(getActivity(), R.layout.todo_item_fragment, mTodoItemsList);
         setListAdapter(todoListAdapter);
     }
 
-    public List<TodoItem> getTodoList(){
+    public List<TodoItemFragment> getTodoList(){
         return mTodoItemsList;
     }
 
