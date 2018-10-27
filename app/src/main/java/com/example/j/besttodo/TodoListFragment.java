@@ -30,4 +30,5 @@ public class TodoListFragment extends ListFragment {
     public List<TodoItem> getTodoList(){
         return mTodoItemsList;
     }
+
 }

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void addFragment(TodoListFragment listFragment) {
         mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(R.id.listFragment, listFragment).commit();
+        mFragmentTransaction.add(R.id.listFragment, listFragment, "TodoListFragment").commit();
     }
 
     private void addNewTodoItemToTodoItemToList(List<TodoItem> currentTodoList){
