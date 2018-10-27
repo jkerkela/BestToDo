@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/todoItemListRow"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="?android:attr/listPreferredItemHeight">
 
         <EditText
             android:id="@+id/todoItemDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:inputType="textMultiLine"
-            android:text="@string/todoItemText"/>
+            android:text="@string/todoItemText" />
 
-</TableLayout>
+        <ImageButton
+            android:id="@+id/todoItemActionButton"
+            android:layout_width="40dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/baseline_more_horiz_black_24" />
+
+</RelativeLayout>
