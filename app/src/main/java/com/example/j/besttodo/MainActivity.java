@@ -12,8 +12,7 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    TodoListFragment mListFragment = new TodoListFragment();
-    FragmentTransaction mFragmentTransaction;
+    private TodoListFragment mListFragment = new TodoListFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         InitiateToDoItemAdderButton();
 
         if (savedInstanceState == null) {
-            addFragment(mListFragment);
+            InitiateTodoListFragment(mListFragment);
         }
     }
 
@@ -57,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void addFragment(TodoListFragment listFragment) {
-        mFragmentTransaction = getFragmentManager().beginTransaction();
+    private void InitiateTodoListFragment(TodoListFragment listFragment) {
+        FragmentTransaction mFragmentTransaction = getFragmentManager().beginTransaction();
         mFragmentTransaction.add(R.id.listFragmentContainer, listFragment).commit();
     }
 

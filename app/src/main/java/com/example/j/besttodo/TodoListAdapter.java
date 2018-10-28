@@ -11,12 +11,12 @@ import android.widget.ImageButton;
 
 import java.util.List;
 
-public class TodoListAdapter extends ArrayAdapter<TodoItemFragment> {
+public class TodoListAdapter extends ArrayAdapter<TodoItem> {
 
     private Activity mContext;
     private int mTodoItemLayout;
 
-    TodoListAdapter(@NonNull Activity context, int todoItemLayout, @NonNull List<TodoItemFragment> todoItemList) {
+    TodoListAdapter(@NonNull Activity context, int todoItemLayout, @NonNull List<TodoItem> todoItemList) {
         super(context, todoItemLayout, todoItemList);
         mContext = context;
         mTodoItemLayout = todoItemLayout;
