@@ -43,18 +43,31 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
         todoItemActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopUp();
+                int[] locationCoordinates = locatePosition(view);
+                showPopUpAtLocation(locationCoordinates);
             }
         });
     }
 
-    private void showPopUp() {
+    private int[] locatePosition(View view) {
+        int[] locationCoordinates = new int[2];
+        view.getLocationOnScreen(locationCoordinates);
+        int adjustedYAxisLocation = adjustLocationToViewItemHeight(locationCoordinates[1], view);
+        locationCoordinates[1] = adjustedYAxisLocation;
+        return locationCoordinates;
+    }
+
+    private int adjustLocationToViewItemHeight(int yAxisLoc, View view) {
+        return view.getHeight() + yAxisLoc;
+    }
+
+    private void showPopUpAtLocation(int[] locationCoordinates) {
         LayoutInflater inflater = mContext.getLayoutInflater();
+        //TODO: refactor popup window look
         View todoItemPopupView = inflater.inflate(R.layout.todo_item_popup, null);
         PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         todoItemPopup.setFocusable(true);
-        //TODO: needs to be shows at click location
-        todoItemPopup.showAtLocation(todoItemPopupView, Gravity.CENTER,0,0);
+        todoItemPopup.showAsDropDown(todoItemPopupView, locationCoordinates[0], locationCoordinates[1]);
     }
 }
