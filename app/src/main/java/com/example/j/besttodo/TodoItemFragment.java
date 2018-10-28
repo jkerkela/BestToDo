@@ -20,18 +20,4 @@ public class TodoItemFragment extends Fragment {
         return inflater.inflate(R.layout.todo_item_fragment, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        addListeners(view);
-    }
-
-    private void addListeners(View view) {
-        ImageButton imageButton = view.findViewById(R.id.todoItemActionButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-    }
-
 }

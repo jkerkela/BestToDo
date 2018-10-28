@@ -10,8 +10,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     TodoListFragment mListFragment = new TodoListFragment();
@@ -53,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<TodoItemFragment> todoList = mListFragment.getTodoList();
-                addNewTodoItemToTodoItemToList(todoList);
+                addNewTodoItemToTodoItemToList(mListFragment);
                 updateFragmentView(mListFragment);
             }
         });
@@ -62,18 +59,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void addFragment(TodoListFragment listFragment) {
         mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(R.id.listFragment, listFragment, "TodoListFragment").commit();
+        mFragmentTransaction.add(R.id.listFragmentContainer, listFragment).commit();
     }
 
-    private void addNewTodoItemToTodoItemToList(List<TodoItemFragment> currentTodoList){
-        TodoItemFragment todoItemFragment = new TodoItemFragment();
-        addTodoFragment(todoItemFragment);
-        currentTodoList.add(todoItemFragment);
-    }
-
-    private void addTodoFragment(TodoItemFragment todoItemFragment) {
-        mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(R.id.listFragment, todoItemFragment).commit();
+    private void addNewTodoItemToTodoItemToList(TodoListFragment currentTodoList){
+        currentTodoList.addNewTodoItem();
     }
 
     private void updateFragmentView(TodoListFragment listFragment){

@@ -27,8 +27,9 @@ public class TodoListFragment extends ListFragment {
         setListAdapter(todoListAdapter);
     }
 
-    public List<TodoItemFragment> getTodoList(){
-        return mTodoItemsList;
+    public void addNewTodoItem() {
+        TodoItemFragment todoItemFragment = new TodoItemFragment();
+        mTodoItemsList.add(todoItemFragment);
     }
 
 }
