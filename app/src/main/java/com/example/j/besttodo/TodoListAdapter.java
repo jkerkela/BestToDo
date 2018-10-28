@@ -53,6 +53,7 @@ public class TodoListAdapter extends ArrayAdapter<TodoItem> {
         View todoItemPopupView = inflater.inflate(R.layout.todo_item_popup, null);
         PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        todoItemPopup.setFocusable(true);
         //TODO: needs to be shows at click location
         todoItemPopup.showAtLocation(todoItemPopupView, Gravity.CENTER,0,0);
     }
