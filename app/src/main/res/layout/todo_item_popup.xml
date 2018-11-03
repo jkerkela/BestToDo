@@ -5,9 +5,13 @@
     android:layout_height="wrap_content"
     android:background="@android:color/darker_gray"
     android:orientation="vertical">
+
     <TextView
+        android:id="@+id/TodoItemRemoveButtonPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="This is a PopupWindow" />
+        android:text="This is a PopupWindow"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 </LinearLayout>

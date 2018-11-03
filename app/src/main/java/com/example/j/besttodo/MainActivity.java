@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateFragmentView(TodoListFragment listFragment){
-        ArrayAdapter mlistAdapter = (ArrayAdapter) listFragment.getListAdapter();
-        mlistAdapter.notifyDataSetChanged();
+        ArrayAdapter todoListAdapterAdapter = (ArrayAdapter) listFragment.getListAdapter();
+        todoListAdapterAdapter.notifyDataSetChanged();
     }
 
 }
