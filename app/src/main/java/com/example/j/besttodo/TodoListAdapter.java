@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -76,13 +75,14 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             todoItemPopup.setFocusable(true);
+            todoItemPopup.setElevation(40);
             todoItemPopup.showAsDropDown(todoItemPopupView, locationCoordinates[0], locationCoordinates[1]);
             addListenerToRemoveTodoItemButtonOnPopupWindow(todoItemPopupView, todoItemPopup);
         }
 
         private void addListenerToRemoveTodoItemButtonOnPopupWindow(View todoItemPopupView, final PopupWindow todoItemPopup) {
-            TextView placeholder = todoItemPopupView.findViewById(R.id.TodoItemRemoveButtonPlaceholder);
-            placeholder.setOnClickListener(new View.OnClickListener() {
+            ImageButton todoItemRemoveButton = todoItemPopupView.findViewById(R.id.TodoItemRemoveButton);
+            todoItemRemoveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getLayoutPosition();

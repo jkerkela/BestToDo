@@ -2,4 +2,5 @@
     <string name="app_name">BestToDo</string>
     <string name="todoItemText">Add ToDo text here</string>
     <string name="addTodoItemHint">Add new ToDo</string>
+    <string name="removeTodoItemText">Remove Todo Item</string>
 </resources>

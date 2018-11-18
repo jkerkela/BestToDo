@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:color/darker_gray"
-    android:orientation="vertical">
+    android:background="@android:color/background_light"
+    android:layout_alignParentEnd="true"
+    android:padding="5dp">
 
     <TextView
-        android:id="@+id/TodoItemRemoveButtonPlaceholder"
+        android:id="@+id/TodoItemRemoveText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="This is a PopupWindow"
+        android:text="@string/removeTodoItemText"
+        android:textSize="18sp"/>
+
+    <ImageButton
+        android:id="@+id/TodoItemRemoveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/TodoItemRemoveText"
+        android:src="@drawable/baseline_delete_black_24"
+        android:background="@android:color/background_light"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"/>
-</LinearLayout>
+</RelativeLayout>
