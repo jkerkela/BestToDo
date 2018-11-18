@@ -26,11 +26,11 @@ public class TodoListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RecyclerView recyclerView = getView().findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
+        todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        todoListView.setItemAnimator(new DefaultItemAnimator());
         todoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
-        recyclerView.setAdapter(todoListAdapter);
+        todoListView.setAdapter(todoListAdapter);
     }
 
     public void addNewTodoItem() {
