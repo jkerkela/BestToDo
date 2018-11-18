@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addNewTodoItemToTodoItemToList(mListFragment);
-                updateFragmentView(mListFragment);
             }
         });
     }
@@ -63,11 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNewTodoItemToTodoItemToList(TodoListFragment todoListFragment){
         todoListFragment.addNewTodoItem();
-    }
-
-    private void updateFragmentView(TodoListFragment listFragment){
-        ArrayAdapter todoListAdapterAdapter = (ArrayAdapter) listFragment.getListAdapter();
-        todoListAdapterAdapter.notifyDataSetChanged();
     }
 
 }

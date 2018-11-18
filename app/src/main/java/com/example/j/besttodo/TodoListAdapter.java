@@ -1,90 +1,104 @@
 package com.example.j.besttodo;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class TodoListAdapter extends ArrayAdapter<TodoItem> {
+public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder> {
 
     private final List<TodoItem> mTodoItemList;
-    private Activity mContext;
-    private int mTodoItemLayout;
-    private LayoutInflater layoutInflater;
+    private Context mContext;
 
-    TodoListAdapter(@NonNull Activity context, int todoItemLayout, @NonNull List<TodoItem> todoItemList) {
-        super(context, todoItemLayout, todoItemList);
-        mContext = context;
-        mTodoItemLayout = todoItemLayout;
-        mTodoItemList = todoItemList;
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.todo_item, parent, false);
+
+        return new MyViewHolder(itemView);
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View todoItemLayout, @NonNull ViewGroup parent) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        TodoItem todoItem = mTodoItemList.get(position);
+        //TODO: implement getter+setter for todoItemText
+        //holder.todoItemText.setText(todoItem.getText());
+    }
 
-        TodoItem todoItem = getItem(position);
-        //TODO: the positioning is not correct here, may be related that todo item is final when setting listeners
-        todoItem.setPosition(position);
-        if(todoItemLayout == null) {
-            layoutInflater = mContext.getLayoutInflater();
-            todoItemLayout = layoutInflater.inflate(mTodoItemLayout, parent, false);
-            addListenerToTodoItemActionButtonOnLayoutWithPosition(todoItemLayout, todoItem);
+    @Override
+    public int getItemCount() {
+        return mTodoItemList.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        EditText todoItemText;
+        ImageButton todoItemActionButton;
+
+        MyViewHolder(View view) {
+            super(view);
+            todoItemText = view.findViewById(R.id.todoItemDescription);
+            todoItemActionButton = view.findViewById(R.id.todoItemActionButton);
+            addListenerToTodoItemActionButton(todoItemActionButton);
         }
 
-        return todoItemLayout;
+        private void addListenerToTodoItemActionButton(ImageButton todoItemActionButton) {
+            todoItemActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int[] locationCoordinates = locatePosition(view);
+                    showPopUpAtClickLocation(locationCoordinates);
+                }
+            });
+        }
+
+        private int[] locatePosition(View view) {
+            int[] locationCoordinates = new int[2];
+            view.getLocationOnScreen(locationCoordinates);
+            int adjustedYAxisLocation = adjustLocationToViewItemHeight(locationCoordinates[1], view);
+            locationCoordinates[1] = adjustedYAxisLocation;
+            return locationCoordinates;
+        }
+
+        private int adjustLocationToViewItemHeight(int yAxisLoc, View view) {
+            return view.getHeight() + yAxisLoc;
+        }
+
+        private void showPopUpAtClickLocation(int[] locationCoordinates) {
+            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            View todoItemPopupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
+            PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            todoItemPopup.setFocusable(true);
+            todoItemPopup.showAsDropDown(todoItemPopupView, locationCoordinates[0], locationCoordinates[1]);
+            addListenerToRemoveTodoItemButtonOnPopupWindow(todoItemPopupView, todoItemPopup);
+        }
+
+        private void addListenerToRemoveTodoItemButtonOnPopupWindow(View todoItemPopupView, final PopupWindow todoItemPopup) {
+            TextView placeholder = todoItemPopupView.findViewById(R.id.TodoItemRemoveButtonPlaceholder);
+            placeholder.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getLayoutPosition();
+                    mTodoItemList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mTodoItemList.size());
+                    todoItemPopup.dismiss();
+                }
+            });
+        }
     }
 
-    private void addListenerToTodoItemActionButtonOnLayoutWithPosition(final View todoItemLayout, final TodoItem todoItem) {
-        ImageButton todoItemActionButton = todoItemLayout.findViewById(R.id.todoItemActionButton);
-        todoItemActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int[] locationCoordinates = locatePosition(view);
-                showPopUpAtLocationInLayout(locationCoordinates, todoItem);
-            }
-        });
-    }
-
-    private int[] locatePosition(View view) {
-        int[] locationCoordinates = new int[2];
-        view.getLocationOnScreen(locationCoordinates);
-        int adjustedYAxisLocation = adjustLocationToViewItemHeight(locationCoordinates[1], view);
-        locationCoordinates[1] = adjustedYAxisLocation;
-        return locationCoordinates;
-    }
-
-    private int adjustLocationToViewItemHeight(int yAxisLoc, View view) {
-        return view.getHeight() + yAxisLoc;
-    }
-
-    private void showPopUpAtLocationInLayout(int[] locationCoordinates, TodoItem todoItem) {
-        //TODO: add "remove item" button to popup
-        View todoItemPopupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
-        PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        todoItemPopup.setFocusable(true);
-        todoItemPopup.showAsDropDown(todoItemPopupView, locationCoordinates[0], locationCoordinates[1]);
-        addListenerToRemoveTodoItemButtonOnPopupWindow(todoItemPopupView, todoItem);
-    }
-
-    private void addListenerToRemoveTodoItemButtonOnPopupWindow(View todoItemPopupView, final TodoItem todoItem) {
-        TextView placeholder = todoItemPopupView.findViewById(R.id.TodoItemRemoveButtonPlaceholder);
-        placeholder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTodoItemList.remove(todoItem.getPosition());
-                notifyDataSetChanged();
-            }
-        });
+    TodoListAdapter(List<TodoItem> todoItemList, Activity context) {
+        mTodoItemList = todoItemList;
+        mContext = context;
     }
 
 }
