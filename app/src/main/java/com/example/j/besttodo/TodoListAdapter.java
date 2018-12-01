@@ -17,6 +17,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
     private final List<TodoItem> mTodoItemList;
     private Context mContext;
 
+    TodoListAdapter(List<TodoItem> todoItemList, Activity context) {
+        mTodoItemList = todoItemList;
+        mContext = context;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -27,8 +32,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         TodoItem todoItem = mTodoItemList.get(position);
-        //TODO: implement getter+setter for todoItemText
-        //holder.todoItemText.setText(todoItem.getText());
     }
 
     @Override
@@ -37,17 +40,26 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
+
         EditText todoItemText;
         ImageButton todoItemActionButton;
 
         MyViewHolder(View view) {
             super(view);
+            //TODO: when list item is deleted and recreated, text should be set to default
             todoItemText = view.findViewById(R.id.todoItemDescription);
-            todoItemActionButton = view.findViewById(R.id.todoItemActionButton);
-            addListenerToTodoItemActionButton(todoItemActionButton);
-        }
+            todoItemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-        private void addListenerToTodoItemActionButton(ImageButton todoItemActionButton) {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(!hasFocus) {
+                        mTodoItemList.get(getAdapterPosition()).setText(todoItemText.getText().toString());
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+
+            todoItemActionButton = view.findViewById(R.id.todoItemActionButton);
             todoItemActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -93,11 +105,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                 }
             });
         }
-    }
-
-    TodoListAdapter(List<TodoItem> todoItemList, Activity context) {
-        mTodoItemList = todoItemList;
-        mContext = context;
     }
 
 }

@@ -7,9 +7,18 @@ package com.example.j.besttodo;
 class TodoItem {
 
 
-    private int text;
+    private String todoItemText;
+    private String defaultText = String.valueOf(R.string.todoItemText);
 
-    public int getText() {
-        return text;
+    public String getText() {
+        return todoItemText;
+    }
+
+    public void setText(String text) {
+        this.todoItemText = text;
+    }
+
+    public void resetDefaultText() {
+        this.todoItemText = defaultText;
     }
 }

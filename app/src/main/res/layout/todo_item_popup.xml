@@ -22,7 +22,7 @@
         android:layout_toEndOf="@+id/TodoItemRemoveText"
         android:src="@drawable/baseline_delete_black_24"
         android:background="@android:color/background_light"
-        android:paddingStart="20dp"
+        android:paddingStart="30dp"
         android:paddingEnd="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"/>
