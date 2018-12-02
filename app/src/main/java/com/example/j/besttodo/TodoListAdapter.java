@@ -53,7 +53,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if(!hasFocus) {
-                        mTodoItemList.get(getAdapterPosition()).setText(todoItemText.getText().toString());
+                        mTodoItemList.get(getLayoutPosition()).setText(todoItemText.getText().toString());
                         notifyDataSetChanged();
                     }
                 }
@@ -100,7 +100,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                     int position = getLayoutPosition();
                     mTodoItemList.remove(position);
                     notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, mTodoItemList.size());
                     todoItemPopup.dismiss();
                 }
             });
