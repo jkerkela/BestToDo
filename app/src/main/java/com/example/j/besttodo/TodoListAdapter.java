@@ -31,7 +31,15 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        TodoItem todoItem = mTodoItemList.get(position);
+    }
+
+    @Override
+    public void onViewRecycled(MyViewHolder holder) {
+        if(holder.getAdapterPosition() == -1)
+        {
+            holder.todoItemText.setText("Add ToDo text here");
+        }
+
     }
 
     @Override
@@ -46,7 +54,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
         MyViewHolder(View view) {
             super(view);
-            //TODO: when list item is deleted and recreated, text should be set to default
             todoItemText = view.findViewById(R.id.todoItemDescription);
             todoItemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 

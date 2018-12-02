@@ -1,14 +1,12 @@
 package com.example.j.besttodo;
 
-
 /**
  * Created by J on 10/13/2018.
  */
 class TodoItem {
 
 
-    private String todoItemText;
-    private String defaultText = String.valueOf(R.string.todoItemText);
+    private String todoItemText = "Add ToDo text here";
 
     public String getText() {
         return todoItemText;
@@ -18,7 +16,4 @@ class TodoItem {
         this.todoItemText = text;
     }
 
-    public void resetDefaultText() {
-        this.todoItemText = defaultText;
-    }
 }
