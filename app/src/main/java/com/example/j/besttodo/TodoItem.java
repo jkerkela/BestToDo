@@ -6,7 +6,7 @@ package com.example.j.besttodo;
 class TodoItem {
 
 
-    private String todoItemText = "Add ToDo text here";
+    private String todoItemText;
 
     public String getText() {
         return todoItemText;

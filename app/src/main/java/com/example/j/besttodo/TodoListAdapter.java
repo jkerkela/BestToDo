@@ -35,9 +35,9 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
     @Override
     public void onViewRecycled(MyViewHolder holder) {
-        if(holder.getAdapterPosition() == -1)
-        {
-            holder.todoItemText.setText("Add ToDo text here");
+        if(holder.getLayoutPosition() == -1) {
+            String defaultTodoItemText = mContext.getResources().getString(R.string.todoItemText);
+            holder.todoItemText.setText(defaultTodoItemText);
         }
 
     }
