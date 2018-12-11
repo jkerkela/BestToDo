@@ -11,7 +11,5 @@
     <group android:id="@+id/group_menu">
         <item android:id="@+id/setting_shortcut"
             android:title="setting_shortcut_placeholder" />
-        <item android:id="@+id/exit_app_shortcut"
-            android:title="exit_app_shortcut_placeholder" />
     </group>
 </menu>
