@@ -30,11 +30,9 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
     </FrameLayout>
 
-    <!-- TODO: needs to start below title-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_frame"
         tools:context="com.example.j.besttodo.MainActivity"
         android:id="@+id/baseLayout"
         android:focusable="true"
@@ -43,7 +41,8 @@
         <FrameLayout
             android:id="@+id/listFragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="?attr/actionBarSize"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addNewTodoItemButton"
