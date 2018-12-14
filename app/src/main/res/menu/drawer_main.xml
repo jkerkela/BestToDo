@@ -8,7 +8,9 @@
         </menu>
     </item>
 
-    <group android:id="@+id/group_menu">
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/group_menu">
         <item android:id="@+id/setting_shortcut"
             android:title="setting_shortcut_placeholder" />
     </group>
