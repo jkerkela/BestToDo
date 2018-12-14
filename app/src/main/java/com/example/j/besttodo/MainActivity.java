@@ -7,7 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -26,9 +25,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //TODO: clean with: https://developer.android.com/training/implementing-navigation/nav-drawer
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        initiateSideMenu();
+        initiateBaseFocusHolder();
+        initiateToDoItemAdderButton();
 
+        if (savedInstanceState == null) {
+            InitiateTodoListFragment(mListFragment);
+        }
+    }
+
+    private void initiateSideMenu() {
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -46,14 +54,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        InitiateBaseFocusHolder();
-        InitiateToDoItemAdderButton();
-
-        if (savedInstanceState == null) {
-            InitiateTodoListFragment(mListFragment);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
     }
 
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void InitiateBaseFocusHolder() {
+    private void initiateBaseFocusHolder() {
         final RelativeLayout baseLayout = findViewById(R.id.baseLayout);
         baseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void InitiateToDoItemAdderButton() {
+    private void initiateToDoItemAdderButton() {
         FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
