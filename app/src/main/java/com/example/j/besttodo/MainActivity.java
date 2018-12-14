@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TodoListFragment mListFragment = new TodoListFragment();
     private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle toggle;
-    private ActionBar supportActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        supportActionBar = getSupportActionBar();
-        supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         InitiateBaseFocusHolder();
         InitiateToDoItemAdderButton();
