@@ -19,28 +19,29 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String defaultFragmentName = "TODO list";
-    private TodoListFragment mListFragment = new TodoListFragment();
     private DrawerLayout mDrawerLayout;
     private final FragmentManager mFragmentManager = getFragmentManager();
     TodoListFragmentHolder mTodoListFragmentHolder = new TodoListFragmentHolder();
+    private TodoListFragment currentVisibleTodoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String mInitTodoListFragmentName = "TODO list";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            addNewTodoListFragment(mListFragment, defaultFragmentName);
-            mTodoListFragmentHolder.addFragment(mListFragment);
+            addNewTodoListFragment(mInitTodoListFragmentName);
         }
 
-        initiateSideMenu();
+        initiateSideMenu(mInitTodoListFragmentName);
         initiateBaseFocusHolder();
         initiateToDoItemAdderButton();
     }
 
-    private void initiateSideMenu() {
+    private void initiateSideMenu(String todoListName) {
+        initiateCustomToolbar(todoListName);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -49,17 +50,16 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
-                        // TODO: Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
-                        String todoListName = (String) menuItem.getTitle();
-                        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
-                        setCurrentTodoListFragment(todoListFragment);
+                        if (menuItem.getGroupId() == R.id.group_todo_list_items) {
+                            String todoListName = (String) menuItem.getTitle();
+                            TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
+                            setCurrentTodoListFragment(todoListFragment);
+                        }
                         return true;
                     }
                 }
         );
-        intiateSideMenuTodoList(navigationView, defaultFragmentName);
-        initiateCustomToolbar(defaultFragmentName);
+        intiateSideMenuTodoList(navigationView, todoListName);
     }
 
     private void intiateSideMenuTodoList(NavigationView navigationView, String todoListName) {
@@ -112,17 +112,19 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewTodoItemToTodoItemToList(mListFragment);
+                addNewTodoItemToTodoItemToList(currentVisibleTodoList);
             }
         });
     }
 
-    private void addNewTodoListFragment(TodoListFragment listFragment, String fragmentName) {
+    private void addNewTodoListFragment(String todoListName) {
+        TodoListFragment listFragment = new TodoListFragment();
+        listFragment.setName(todoListName);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction
                 .add(R.id.listFragmentContainer, listFragment)
                 .commit();
-        listFragment.setName(fragmentName);
+        mTodoListFragmentHolder.addFragment(listFragment);
     }
 
     private void setCurrentTodoListFragment(TodoListFragment listFragment) {
@@ -130,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction
                 .show(listFragment)
                 .commit();
+        currentVisibleTodoList = listFragment;
     }
 
     private void addNewTodoItemToTodoItemToList(TodoListFragment todoListFragment){
