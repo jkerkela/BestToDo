@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private final FragmentManager mFragmentManager = getFragmentManager();
     TodoListFragmentHolder mTodoListFragmentHolder = new TodoListFragmentHolder();
     private TodoListFragment currentVisibleTodoList;
+    private NavigationView mNavigationView;
+    private ActionBar mSupportActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,50 +34,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            addNewTodoListFragment(mInitTodoListFragmentName);
+            initiateBaseFocusHolder();
+            initiateSideMenu(mInitTodoListFragmentName);
+            initiateInitialTodoList(mInitTodoListFragmentName);
+            currentVisibleTodoList = mTodoListFragmentHolder.getFragmentByName(mInitTodoListFragmentName);
         }
-
-        initiateSideMenu(mInitTodoListFragmentName);
-        initiateBaseFocusHolder();
         initiateToDoItemAdderButton();
-    }
-
-    private void initiateSideMenu(String todoListName) {
-        initiateCustomToolbar(todoListName);
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        if (menuItem.getGroupId() == R.id.group_todo_list_items) {
-                            String todoListName = (String) menuItem.getTitle();
-                            TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
-                            setCurrentTodoListFragment(todoListFragment);
-                        }
-                        return true;
-                    }
-                }
-        );
-        intiateSideMenuTodoList(navigationView, todoListName);
-    }
-
-    private void intiateSideMenuTodoList(NavigationView navigationView, String todoListName) {
-        Menu navigationViewMenu = navigationView.getMenu();
-        navigationViewMenu.add(R.id.group_todo_list_items ,Menu.NONE,Menu.NONE, todoListName);
-    }
-
-    private void initiateCustomToolbar(String todoListName) {
-        Toolbar toolbar = findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-            actionBar.setTitle(todoListName);
-        }
     }
 
     @Override
@@ -107,14 +71,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initiateToDoItemAdderButton() {
-        FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewTodoItemToTodoItemToList(currentVisibleTodoList);
-            }
-        });
+    private void initiateSideMenu(String todoListName) {
+        initiateCustomToolbar(todoListName);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        if (menuItem.getGroupId() == R.id.group_todo_list_items) {
+                            String todoListName = (String) menuItem.getTitle();
+                            TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
+                            setCurrentTodoListFragment(todoListFragment);
+                        } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
+                            //TODO: launch pop-up window asking for list name
+                            String mockListName = "TEST";
+                            addNewTodoListFragment(mockListName);
+                        }
+                        return true;
+                    }
+                }
+        );
+    }
+
+    private void initiateCustomToolbar(String todoListName) {
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        mSupportActionBar = getSupportActionBar();
+        if (mSupportActionBar != null) {
+            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
+            mSupportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            mSupportActionBar.setTitle(todoListName);
+        }
     }
 
     private void addNewTodoListFragment(String todoListName) {
@@ -125,18 +115,56 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.listFragmentContainer, listFragment)
                 .commit();
         mTodoListFragmentHolder.addFragment(listFragment);
+        addTodoListToNavigationView(todoListName);
     }
 
-    private void setCurrentTodoListFragment(TodoListFragment listFragment) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction
-                .show(listFragment)
-                .commit();
-        currentVisibleTodoList = listFragment;
+    private void addTodoListToNavigationView(String todoListName) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        navigationViewMenu.add(R.id.group_todo_list_items ,Menu.NONE,Menu.NONE, todoListName);
+    }
+
+    private void initiateInitialTodoList(String mInitTodoListFragmentName) {
+        addNewTodoListFragment(mInitTodoListFragmentName);
+    }
+
+    private void initiateToDoItemAdderButton() {
+        FloatingActionButton floatingActionButton = findViewById(R.id.addNewTodoItemButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewTodoItemToTodoItemToList(currentVisibleTodoList);
+            }
+        });
     }
 
     private void addNewTodoItemToTodoItemToList(TodoListFragment todoListFragment){
         todoListFragment.addNewTodoItem();
+    }
+
+    private void setCurrentTodoListFragment(TodoListFragment listFragment) {
+        changeVisibleFragmentTo(listFragment);
+        String fragmentName = listFragment.getName();
+        mSupportActionBar.setTitle(fragmentName);
+        currentVisibleTodoList = listFragment;
+    }
+
+    private void changeVisibleFragmentTo(TodoListFragment todoListFragment) {
+        hideCurrentFragment();
+        setFragmentVisible(todoListFragment);
+    }
+
+    private void hideCurrentFragment() {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction
+                .hide(currentVisibleTodoList)
+                .commit();
+    }
+
+    private void setFragmentVisible(TodoListFragment todoListFragment) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction
+                .show(todoListFragment)
+                .commit();
     }
 
 }

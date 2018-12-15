@@ -8,6 +8,8 @@
     <group
         android:checkableBehavior="single"
         android:id="@+id/group_menu_items">
+        <item android:id="@+id/add_new_todo_list"
+            android:title="@string/add_new_todo_list" />
         <item android:id="@+id/setting_shortcut"
             android:title="setting_shortcut_placeholder" />
     </group>
