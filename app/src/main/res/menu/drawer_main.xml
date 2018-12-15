@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Todo Lists">
-        <menu>
-            <item android:id="@+id/todo_list1"
-                android:title="List 1 place holder" />
-        </menu>
-    </item>
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/group_todo_list_items">
+    </group>
 
     <group
         android:checkableBehavior="single"
-        android:id="@+id/group_menu">
+        android:id="@+id/group_menu_items">
         <item android:id="@+id/setting_shortcut"
             android:title="setting_shortcut_placeholder" />
     </group>

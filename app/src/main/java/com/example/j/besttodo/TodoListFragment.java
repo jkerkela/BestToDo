@@ -33,6 +33,9 @@ public class TodoListFragment extends Fragment {
         todoListView.setAdapter(todoListAdapter);
     }
 
+    public List<TodoItem> getTodoItemsList() {
+        return mTodoItemsList;
+    }
     public void addNewTodoItem() {
         TodoItem todoItem = new TodoItem();
         mTodoItemsList.add(todoItem);

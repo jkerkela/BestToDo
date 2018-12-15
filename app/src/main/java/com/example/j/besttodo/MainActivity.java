@@ -1,5 +1,6 @@
 package com.example.j.besttodo;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
@@ -19,23 +22,24 @@ public class MainActivity extends AppCompatActivity {
 
     private TodoListFragment mListFragment = new TodoListFragment();
     private DrawerLayout mDrawerLayout;
+    private final FragmentManager mFragmentManager = getFragmentManager();
+    TodoListFragmentNameHolder mTodoListFragmentNameHolder = new TodoListFragmentNameHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initiateSideMenu();
-        initiateBaseFocusHolder();
-        initiateToDoItemAdderButton();
-
         if (savedInstanceState == null) {
             InitiateTodoListFragment(mListFragment);
         }
+
+        initiateSideMenu();
+        initiateBaseFocusHolder();
+        initiateToDoItemAdderButton();
     }
 
     private void initiateSideMenu() {
-
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -50,13 +54,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+        SparseArray fragmentMap = mTodoListFragmentNameHolder.getFragmentMap();
+        String todoListName = (String) fragmentMap.get(0);
+        intiateSideMenuTodoList(navigationView, todoListName);
+        initiateCustomToolbar(todoListName);
+    }
 
+    private void intiateSideMenuTodoList(NavigationView navigationView, String todoListName) {
+        Menu navigationViewMenu = navigationView.getMenu();
+        navigationViewMenu.add(R.id.group_todo_list_items ,Menu.NONE,Menu.NONE, todoListName);
+    }
+
+    private void initiateCustomToolbar(String todoListName) {
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setTitle(todoListName);
         }
     }
 
@@ -100,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void InitiateTodoListFragment(TodoListFragment listFragment) {
-        FragmentTransaction mFragmentTransaction = getFragmentManager().beginTransaction();
-        mFragmentTransaction.add(R.id.listFragmentContainer, listFragment).commit();
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.listFragmentContainer, listFragment).commit();
+        mTodoListFragmentNameHolder.addFragment(0,"Todo list");
     }
 
     private void addNewTodoItemToTodoItemToList(TodoListFragment todoListFragment){
