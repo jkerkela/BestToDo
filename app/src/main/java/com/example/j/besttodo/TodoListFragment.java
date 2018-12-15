@@ -16,6 +16,7 @@ public class TodoListFragment extends Fragment {
 
     private List<TodoItem> mTodoItemsList = new ArrayList<>();
     TodoListAdapter todoListAdapter;
+    private String name;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -33,9 +34,6 @@ public class TodoListFragment extends Fragment {
         todoListView.setAdapter(todoListAdapter);
     }
 
-    public List<TodoItem> getTodoItemsList() {
-        return mTodoItemsList;
-    }
     public void addNewTodoItem() {
         TodoItem todoItem = new TodoItem();
         mTodoItemsList.add(todoItem);
@@ -43,4 +41,11 @@ public class TodoListFragment extends Fragment {
         todoListAdapter.notifyDataSetChanged();
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

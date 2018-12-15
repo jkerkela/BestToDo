@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,10 +19,11 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String defaultFragmentName = "TODO list";
     private TodoListFragment mListFragment = new TodoListFragment();
     private DrawerLayout mDrawerLayout;
     private final FragmentManager mFragmentManager = getFragmentManager();
-    TodoListFragmentNameHolder mTodoListFragmentNameHolder = new TodoListFragmentNameHolder();
+    TodoListFragmentHolder mTodoListFragmentHolder = new TodoListFragmentHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            InitiateTodoListFragment(mListFragment);
+            addNewTodoListFragment(mListFragment, defaultFragmentName);
+            mTodoListFragmentHolder.addFragment(mListFragment);
         }
 
         initiateSideMenu();
@@ -50,14 +51,15 @@ public class MainActivity extends AppCompatActivity {
                         mDrawerLayout.closeDrawers();
                         // TODO: Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
+                        String todoListName = (String) menuItem.getTitle();
+                        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
+                        setCurrentTodoListFragment(todoListFragment);
                         return true;
                     }
                 }
         );
-        SparseArray fragmentMap = mTodoListFragmentNameHolder.getFragmentMap();
-        String todoListName = (String) fragmentMap.get(0);
-        intiateSideMenuTodoList(navigationView, todoListName);
-        initiateCustomToolbar(todoListName);
+        intiateSideMenuTodoList(navigationView, defaultFragmentName);
+        initiateCustomToolbar(defaultFragmentName);
     }
 
     private void intiateSideMenuTodoList(NavigationView navigationView, String todoListName) {
@@ -115,10 +117,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void InitiateTodoListFragment(TodoListFragment listFragment) {
+    private void addNewTodoListFragment(TodoListFragment listFragment, String fragmentName) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.listFragmentContainer, listFragment).commit();
-        mTodoListFragmentNameHolder.addFragment(0,"Todo list");
+        fragmentTransaction
+                .add(R.id.listFragmentContainer, listFragment)
+                .commit();
+        listFragment.setName(fragmentName);
+    }
+
+    private void setCurrentTodoListFragment(TodoListFragment listFragment) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction
+                .show(listFragment)
+                .commit();
     }
 
     private void addNewTodoItemToTodoItemToList(TodoListFragment todoListFragment){
