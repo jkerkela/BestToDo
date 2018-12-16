@@ -1,8 +1,10 @@
 package com.example.j.besttodo;
 
+import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 /**
@@ -40,6 +42,15 @@ class PopUpProvider {
         popupWindow.setElevation(40);
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
         return popupWindow;
+    }
+
+    static void dimBackgroundOfPopup(PopupWindow popupWindow, Context context) {
+        View parentView = (View) popupWindow.getContentView().getParent();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) parentView.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.4f;
+        windowManager.updateViewLayout(parentView, p);
     }
 
 }

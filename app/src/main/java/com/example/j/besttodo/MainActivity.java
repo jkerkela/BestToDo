@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
                             setCurrentTodoListFragment(todoListFragment);
                             mDrawerLayout.closeDrawers();
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
-                            //TODO: launch pop-up window asking for list name
                             View popupView = getLayoutInflater().inflate(R.layout.text_input_popup, null);
                             PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+                            PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, getApplicationContext());
                             addListenerToTodoListNamingPopupWindow(popupView, textInputPopupWindow);
                         }
                         return true;
