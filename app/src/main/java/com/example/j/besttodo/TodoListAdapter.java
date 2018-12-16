@@ -74,33 +74,15 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             todoItemActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int[] locationCoordinates = locatePosition(view);
-                    showPopUpAtClickLocation(locationCoordinates);
+                    LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+                    View popupView = null;
+                    if (layoutInflater != null) {
+                        popupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
+                    }
+                    PopupWindow todoItemPopup = PopupProvider.providePopUpWindowOnView(popupView, view);
+                    addListenerToRemoveTodoItemButtonOnPopupWindow(popupView, todoItemPopup);
                 }
             });
-        }
-
-        private int[] locatePosition(View view) {
-            int[] locationCoordinates = new int[2];
-            view.getLocationOnScreen(locationCoordinates);
-            int adjustedYAxisLocation = adjustLocationToViewItemHeight(locationCoordinates[1], view);
-            locationCoordinates[1] = adjustedYAxisLocation;
-            return locationCoordinates;
-        }
-
-        private int adjustLocationToViewItemHeight(int yAxisLoc, View view) {
-            return view.getHeight() + yAxisLoc;
-        }
-
-        private void showPopUpAtClickLocation(int[] locationCoordinates) {
-            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            View todoItemPopupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
-            PopupWindow todoItemPopup = new PopupWindow(todoItemPopupView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            todoItemPopup.setFocusable(true);
-            todoItemPopup.setElevation(40);
-            todoItemPopup.showAsDropDown(todoItemPopupView, locationCoordinates[0], locationCoordinates[1]);
-            addListenerToRemoveTodoItemButtonOnPopupWindow(todoItemPopupView, todoItemPopup);
         }
 
         private void addListenerToRemoveTodoItemButtonOnPopupWindow(View todoItemPopupView, final PopupWindow todoItemPopup) {
@@ -116,5 +98,4 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             });
         }
     }
-
 }
