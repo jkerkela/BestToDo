@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
                             TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByName(todoListName);
                             setCurrentTodoListFragment(todoListFragment);
+                            mDrawerLayout.closeDrawers();
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
                             //TODO: launch pop-up window asking for list name
-                            String mockListName = "TEST";
-                            addNewTodoListFragment(mockListName);
+                            View popupView = getLayoutInflater().inflate(R.layout.text_input_popup, null);
+                            PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+                            addListenerToTodoListNamingPopupWindow(popupView, textInputPopupWindow);
                         }
                         return true;
                     }
@@ -105,6 +109,18 @@ public class MainActivity extends AppCompatActivity {
             mSupportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             mSupportActionBar.setTitle(todoListName);
         }
+    }
+
+    private void addListenerToTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow) {
+        ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
+        final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
+        setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNewTodoListFragment(todoListNameText.getText().toString());
+                textInputPopupWindow.dismiss();
+            }
+        });
     }
 
     private void addNewTodoListFragment(String todoListName) {

@@ -79,7 +79,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                     if (layoutInflater != null) {
                         popupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
                     }
-                    PopupWindow todoItemPopup = PopupProvider.providePopUpWindowOnView(popupView, view);
+                    PopupWindow todoItemPopup = PopUpProvider.providePopUpWindowOnViewAtClickLocation(popupView, view);
                     addListenerToRemoveTodoItemButtonOnPopupWindow(popupView, todoItemPopup);
                 }
             });

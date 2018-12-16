@@ -7,4 +7,6 @@
     <string name="navigation_drawer_close">nav_draver_close</string>
     <string name="custom_nav_background">Custom nav background</string>
     <string name="add_new_todo_list">Add new Todo List</string>
+    <string name="set_name_for_todo_list">Set name for Todo List:</string>
+    <string name="type_todo_list_name_here">Todo List Name</string>
 </resources>

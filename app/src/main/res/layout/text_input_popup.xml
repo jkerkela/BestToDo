@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:background="@android:color/background_light">
+
+    <!-- TODO: make popup to sanitized size, change icon-->
+    <TextView
+        android:id="@+id/setTodoListNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="26dip"
+        android:layout_above="@+id/todoListName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        android:text="@string/set_name_for_todo_list"
+        android:textSize="12sp"
+        />
+
+    <EditText
+        android:id="@+id/todoListName"
+        android:layout_width="wrap_content"
+        android:layout_height="26dip"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:inputType="textMultiLine"
+        android:hint="@string/type_todo_list_name_here"
+        android:textSize="16sp"/>
+
+    <ImageButton
+        android:id="@+id/setTodoListNameButton"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_more_horiz_black_24"/>
+
+</RelativeLayout>

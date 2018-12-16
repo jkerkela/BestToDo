@@ -1,7 +1,6 @@
 package com.example.j.besttodo;
 
-import android.content.Context;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
@@ -10,9 +9,9 @@ import android.widget.PopupWindow;
  * Created by J on 12/16/2018.
  */
 
-class PopupProvider {
+class PopUpProvider {
 
-    static PopupWindow providePopUpWindowOnView(View popupView, View view) {
+    static PopupWindow providePopUpWindowOnViewAtClickLocation(View popupView, View view) {
         int[] locationCoordinates = locatePosition(view);
         PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -33,4 +32,14 @@ class PopupProvider {
     private static int adjustLocationToViewItemHeight(int yAxisLoc, View view) {
         return view.getHeight() + yAxisLoc;
     }
+
+    static PopupWindow providePopUpWindowOnViewAtCenter(View popupView) {
+        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setFocusable(true);
+        popupWindow.setElevation(40);
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        return popupWindow;
+    }
+
 }
