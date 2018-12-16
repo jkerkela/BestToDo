@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Created by J on 12/15/2018.
  */
 
-public class TodoListFragmentHolder {
+class TodoListFragmentHolder {
 
     private HashMap<String, TodoListFragment> fragmentList = new HashMap<>();
 
@@ -15,7 +15,7 @@ public class TodoListFragmentHolder {
         fragmentList.put(fragmentName, todoListFragment);
     }
 
-    TodoListFragment getFragmentByName(String fragmentName) {
+    TodoListFragment getFragmentByNameOrNull(String fragmentName) {
         return fragmentList.get(fragmentName);
     }
 }
