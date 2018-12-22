@@ -10,16 +10,26 @@ import android.widget.PopupWindow;
 /**
  * Created by J on 12/16/2018.
  */
-
 class PopUpProvider {
 
     static PopupWindow providePopUpWindowOnViewAtClickLocation(View popupView, View view) {
         int[] locationCoordinates = locatePosition(view);
+        PopupWindow popupWindow = getPopupWithDefaultParameters(popupView);
+        popupWindow.showAsDropDown(popupView, locationCoordinates[0], locationCoordinates[1]);
+        return popupWindow;
+    }
+
+    static PopupWindow providePopUpWindowOnItemLocation(View popupView) {
+        PopupWindow popupWindow = getPopupWithDefaultParameters(popupView);
+        popupWindow.showAtLocation(popupView, Gravity.END, 0, 130);
+        return popupWindow;
+    }
+
+    private static PopupWindow getPopupWithDefaultParameters(View popupView) {
         PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setFocusable(true);
         popupWindow.setElevation(40);
-        popupWindow.showAsDropDown(popupView, locationCoordinates[0], locationCoordinates[1]);
         return popupWindow;
     }
 
@@ -36,10 +46,7 @@ class PopUpProvider {
     }
 
     static PopupWindow providePopUpWindowOnViewAtCenter(View popupView) {
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setFocusable(true);
-        popupWindow.setElevation(40);
+        PopupWindow popupWindow = getPopupWithDefaultParameters(popupView);
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
         return popupWindow;
     }
