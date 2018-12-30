@@ -9,4 +9,7 @@
     <string name="add_new_todo_list">Add new Todo List</string>
     <string name="set_name_for_todo_list">Set name for Todo List:</string>
     <string name="type_todo_list_name_here">Set Todo List Name</string>
+    <string name="set_todo_list_as_current">Set list as current</string>
+    <string name="rename_todo_list">Rename list</string>
+    <string name="remove_todo_list">Remove list</string>
 </resources>

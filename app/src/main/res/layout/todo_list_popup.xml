@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:background="@android:color/background_light"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/SetCurrentTodoList"
+        android:layout_width="150dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_below="@id/SetCurrentTodoListDivider"
+        android:gravity="center_vertical"
+        android:text="@string/set_todo_list_as_current"
+        android:textSize="18sp"/>
+
+    <View
+        android:id="@+id/SetCurrentTodoListDivider"
+        android:layout_width="150dp"
+        android:layout_height="2dp"
+        android:layout_below="@id/RenameTodoList"
+        android:background="?android:attr/listDivider"/>
+
+    <TextView
+        android:id="@+id/RenameTodoList"
+        android:layout_width="150dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_below="@id/RenameTodoListDivider"
+        android:gravity="center_vertical"
+        android:text="@string/rename_todo_list"
+        android:textSize="18sp"/>
+
+    <View
+        android:id="@+id/RenameTodoListDivider"
+        android:layout_width="150dp"
+        android:layout_height="2dp"
+        android:layout_below="@id/RemoveTodoList"
+        android:background="?android:attr/listDivider"/>
+
+    <TextView
+        android:id="@+id/RemoveTodoList"
+        android:layout_width="150dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:text="@string/remove_todo_list"
+        android:textSize="18sp"/>
+
+</RelativeLayout>

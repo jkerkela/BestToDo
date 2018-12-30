@@ -21,7 +21,7 @@ class PopUpProvider {
 
     static PopupWindow providePopUpWindowOnItemLocation(View popupView) {
         PopupWindow popupWindow = getPopupWithDefaultParameters(popupView);
-        popupWindow.showAtLocation(popupView, Gravity.END, 0, 130);
+        popupWindow.showAtLocation(popupView, Gravity.CLIP_HORIZONTAL, 0, 250);
         return popupWindow;
     }
 

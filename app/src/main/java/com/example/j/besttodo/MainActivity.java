@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,19 +87,93 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
-                            TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
-                            setCurrentTodoListFragment(todoListFragment);
-                            mDrawerLayout.closeDrawers();
+                            View popupView = getLayoutInflater().inflate(R.layout.todo_list_popup, null);
+                            PopupWindow todoListActionsPopupWindow = PopUpProvider.providePopUpWindowOnItemLocation(popupView);
+                            addListenerToTodoListActionsPopupWindow(popupView, todoListActionsPopupWindow, todoListName);
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
                             View popupView = getLayoutInflater().inflate(R.layout.text_input_popup, null);
                             PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
                             PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, getApplicationContext());
-                            addListenerToTodoListNamingPopupWindow(popupView, textInputPopupWindow);
+                            addListenerToNewTodoListNamingPopupWindow(popupView, textInputPopupWindow);
                         }
                         return true;
                     }
                 }
         );
+    }
+
+    private void addListenerToTodoListActionsPopupWindow(View popupView, PopupWindow todoListActionsPopupWindow, final String todoListName) {
+        final TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
+        TextView setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoList);
+        setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCurrentTodoListFragment(todoListFragment);
+                mDrawerLayout.closeDrawers();
+            }
+        });
+        TextView renameTodoListButton = popupView.findViewById(R.id.RenameTodoList);
+        renameTodoListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View popupView = getLayoutInflater().inflate(R.layout.text_input_popup, null);
+                PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+                PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, getApplicationContext());
+                addListenerToRenameTodoListNamingPopupWindow(popupView, textInputPopupWindow, todoListName);
+            }
+        });
+        TextView removeTodoListButton = popupView.findViewById(R.id.RemoveTodoList);
+        removeTodoListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                removeTodoListFragment(todoListFragment, todoListName);
+            }
+        });
+    }
+
+    private void removeTodoListFragment(TodoListFragment todoListFragment, String todoListName) {
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction
+                .remove(todoListFragment)
+                .commit();
+        mTodoListFragmentHolder.removeFragment(todoListName);
+        removeTodoListFromNavigationView(todoListFragment.getId());
+    }
+
+    private void removeTodoListFromNavigationView(int todoListIdentifier) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        navigationViewMenu.removeItem(todoListIdentifier);
+    }
+
+    private void addListenerToRenameTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow, final String todoListName) {
+        ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
+        final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
+        setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String InputText = todoListNameText.getText().toString();
+                if(isTodoListNameUnique(InputText)) {
+                    renameTodoListOnNavigationView(todoListName, InputText);
+                    renameTodoList(todoListName, InputText);
+                    textInputPopupWindow.dismiss();
+                } else {
+                    ToastProvider.showToastAtCenterOfScreen("TODO List with set name already exists!", getApplicationContext());
+                }
+            }
+        });
+    }
+
+    private void renameTodoListOnNavigationView(String oldTodoListName,String newTodoListName) {
+        //TODO: this renames sometimes wrong list
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        TodoListFragment todoListToRename = mTodoListFragmentHolder.getFragmentByNameOrNull(oldTodoListName);
+        int todoListIdentifier = todoListToRename.getId();
+        navigationViewMenu.removeItem(todoListIdentifier);
+        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, newTodoListName);
+    }
+
+    private void renameTodoList(String oldTodoListName, String newTodoListName) {
+        mTodoListFragmentHolder.renameFragment(oldTodoListName, newTodoListName);
     }
 
     private void initiateCustomToolbar(String todoListName) {
@@ -114,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addListenerToTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow) {
+    private void addListenerToNewTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow) {
         ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
         final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
         setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
@@ -144,12 +217,12 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.listFragmentContainer, listFragment)
                 .commit();
         mTodoListFragmentHolder.addFragment(listFragment);
-        addTodoListToNavigationView(todoListName);
+        addTodoListToNavigationView(todoListName, listFragment.getId());
     }
 
-    private void addTodoListToNavigationView(String todoListName) {
+    private void addTodoListToNavigationView(String todoListName, int todoListIdentifier) {
         Menu navigationViewMenu = mNavigationView.getMenu();
-        navigationViewMenu.add(R.id.group_todo_list_items ,Menu.NONE,Menu.NONE, todoListName);
+        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
     }
 
     private void initiateInitialTodoList(String mInitTodoListFragmentName) {
