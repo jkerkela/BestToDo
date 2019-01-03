@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView mNavigationView;
     private ActionBar mSupportActionBar;
 
+    //TODO: split classes here for Fragment operations, nav view ui, listeners(?)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String mInitTodoListFragmentName = "TODO list";
@@ -103,12 +104,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addListenerToTodoListActionsPopupWindow(View popupView, PopupWindow todoListActionsPopupWindow, final String todoListName) {
-        final TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
         TextView setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoList);
         setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setCurrentTodoListFragment(todoListFragment);
+                setCurrentTodoList(todoListName);
                 mDrawerLayout.closeDrawers();
             }
         });
@@ -126,22 +126,24 @@ public class MainActivity extends AppCompatActivity {
         removeTodoListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeTodoListFragment(todoListFragment, todoListName);
+                removeTodoListFragment(todoListName);
             }
         });
     }
 
-    private void removeTodoListFragment(TodoListFragment todoListFragment, String todoListName) {
+    private void removeTodoListFragment(String todoListName) {
+        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
+        removeTodoListFromNavigationView(todoListName);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction
                 .remove(todoListFragment)
                 .commit();
         mTodoListFragmentHolder.removeFragment(todoListName);
-        removeTodoListFromNavigationView(todoListFragment.getId());
     }
 
-    private void removeTodoListFromNavigationView(int todoListIdentifier) {
+    private void removeTodoListFromNavigationView(String todoListName) {
         Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
         navigationViewMenu.removeItem(todoListIdentifier);
     }
 
@@ -163,13 +165,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void renameTodoListOnNavigationView(String oldTodoListName,String newTodoListName) {
-        //TODO: this renames sometimes wrong list
-        Menu navigationViewMenu = mNavigationView.getMenu();
-        TodoListFragment todoListToRename = mTodoListFragmentHolder.getFragmentByNameOrNull(oldTodoListName);
-        int todoListIdentifier = todoListToRename.getId();
-        navigationViewMenu.removeItem(todoListIdentifier);
-        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, newTodoListName);
+    private void renameTodoListOnNavigationView(String oldTodoListName, String newTodoListName) {
+        removeTodoListFromNavigationView(oldTodoListName);
+        addTodoListToNavigationView(newTodoListName);
     }
 
     private void renameTodoList(String oldTodoListName, String newTodoListName) {
@@ -217,11 +215,12 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.listFragmentContainer, listFragment)
                 .commit();
         mTodoListFragmentHolder.addFragment(listFragment);
-        addTodoListToNavigationView(todoListName, listFragment.getId());
+        addTodoListToNavigationView(todoListName);
     }
 
-    private void addTodoListToNavigationView(String todoListName, int todoListIdentifier) {
+    private void addTodoListToNavigationView(String todoListName) {
         Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
         navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
     }
 
@@ -243,11 +242,11 @@ public class MainActivity extends AppCompatActivity {
         todoListFragment.addNewTodoItem();
     }
 
-    private void setCurrentTodoListFragment(TodoListFragment listFragment) {
-        changeVisibleFragmentTo(listFragment);
-        String fragmentName = listFragment.getName();
-        mSupportActionBar.setTitle(fragmentName);
-        currentVisibleTodoList = listFragment;
+    private void setCurrentTodoList(String todoListName) {
+        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
+        changeVisibleFragmentTo(todoListFragment);
+        mSupportActionBar.setTitle(todoListName);
+        currentVisibleTodoList = todoListFragment;
     }
 
     private void changeVisibleFragmentTo(TodoListFragment todoListFragment) {
