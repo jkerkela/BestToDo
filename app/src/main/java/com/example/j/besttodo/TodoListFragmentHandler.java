@@ -77,4 +77,9 @@ class TodoListFragmentHandler {
     TodoListFragment getCurrentVisibleTodoList() {
         return currentVisibleTodoListFragment;
     }
+
+    boolean doesFragmentExistWithName(String listNameToCheck) {
+        TodoListFragment todoListFragmentToNotExist = getFragmentByNameOrNull(listNameToCheck);
+        return todoListFragmentToNotExist == null;
+    }
 }

@@ -194,8 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isTodoListNameUnique(String listNameToCheck) {
-        TodoListFragment fragmentIfExists = mTodoListFragmentHandler.getFragmentByNameOrNull(listNameToCheck);
-        return fragmentIfExists == null;
+        return mTodoListFragmentHandler.doesFragmentExistWithName(listNameToCheck);
     }
 
     private void addNewTodoListFragment(String todoListName) {
