@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView mNavigationView;
     private ActionBar mSupportActionBar;
 
-    //TODO: split classes here for Fragment operations, nav view ui, listeners(?)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String mInitTodoListFragmentName = "TODO list";
@@ -85,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
                             View popupView = getLayoutInflater().inflate(R.layout.todo_list_popup, null);
-                            PopupWindow todoListActionsPopupWindow = PopUpProvider.providePopUpWindowOnItemLocation(popupView);
-                            addListenerToTodoListActionsPopupWindow(popupView, todoListActionsPopupWindow, todoListName);
+                            PopUpProvider.providePopUpWindowOnItemLocation(popupView);
+                            addListenerToTodoListActionsPopupWindow(popupView, todoListName);
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
                             View popupView = getLayoutInflater().inflate(R.layout.text_input_popup, null);
                             PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
@@ -99,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void addListenerToTodoListActionsPopupWindow(View popupView, PopupWindow todoListActionsPopupWindow, final String todoListName) {
+    private void addListenerToTodoListActionsPopupWindow(View popupView, final String todoListName) {
         TextView setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoList);
         setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
