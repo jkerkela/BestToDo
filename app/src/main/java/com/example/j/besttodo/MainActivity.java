@@ -1,7 +1,5 @@
 package com.example.j.besttodo;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,9 +23,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    private final FragmentManager mFragmentManager = getFragmentManager();
-    TodoListFragmentHolder mTodoListFragmentHolder = new TodoListFragmentHolder();
-    private TodoListFragment currentVisibleTodoList;
+    TodoListFragmentHandler mTodoListFragmentHandler = new TodoListFragmentHandler(getFragmentManager());
     private NavigationView mNavigationView;
     private ActionBar mSupportActionBar;
 
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             initiateBaseFocusHolder();
             initiateSideMenu(mInitTodoListFragmentName);
             initiateInitialTodoList(mInitTodoListFragmentName);
-            currentVisibleTodoList = mTodoListFragmentHolder.getFragmentByNameOrNull(mInitTodoListFragmentName);
+            setVisibleFragment(mInitTodoListFragmentName);
         }
         initiateToDoItemAdderButton();
     }
@@ -132,13 +128,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void removeTodoListFragment(String todoListName) {
-        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
         removeTodoListFromNavigationView(todoListName);
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction
-                .remove(todoListFragment)
-                .commit();
-        mTodoListFragmentHolder.removeFragment(todoListName);
+        mTodoListFragmentHandler.removeFragment(todoListName);
     }
 
     private void removeTodoListFromNavigationView(String todoListName) {
@@ -171,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renameTodoList(String oldTodoListName, String newTodoListName) {
-        mTodoListFragmentHolder.renameFragment(oldTodoListName, newTodoListName);
+        mTodoListFragmentHandler.renameFragment(oldTodoListName, newTodoListName);
     }
 
     private void initiateCustomToolbar(String todoListName) {
@@ -202,19 +193,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private boolean isTodoListNameUnique(String inputText) {
-        TodoListFragment fragmentIfExists = mTodoListFragmentHolder.getFragmentByNameOrNull(inputText);
+    private boolean isTodoListNameUnique(String listNameToCheck) {
+        TodoListFragment fragmentIfExists = mTodoListFragmentHandler.getFragmentByNameOrNull(listNameToCheck);
         return fragmentIfExists == null;
     }
 
     private void addNewTodoListFragment(String todoListName) {
         TodoListFragment listFragment = new TodoListFragment();
         listFragment.setName(todoListName);
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction
-                .add(R.id.listFragmentContainer, listFragment)
-                .commit();
-        mTodoListFragmentHolder.addFragment(listFragment);
+        mTodoListFragmentHandler.addFragment(listFragment);
         addTodoListToNavigationView(todoListName);
     }
 
@@ -233,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TodoListFragment currentVisibleTodoList = mTodoListFragmentHandler.getCurrentVisibleTodoList();
                 addNewTodoItemToTodoItemToList(currentVisibleTodoList);
             }
         });
@@ -243,29 +231,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setCurrentTodoList(String todoListName) {
-        TodoListFragment todoListFragment = mTodoListFragmentHolder.getFragmentByNameOrNull(todoListName);
-        changeVisibleFragmentTo(todoListFragment);
+        setVisibleFragment(todoListName);
         mSupportActionBar.setTitle(todoListName);
-        currentVisibleTodoList = todoListFragment;
     }
 
-    private void changeVisibleFragmentTo(TodoListFragment todoListFragment) {
-        hideCurrentFragment();
-        setFragmentVisible(todoListFragment);
-    }
-
-    private void hideCurrentFragment() {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction
-                .hide(currentVisibleTodoList)
-                .commit();
-    }
-
-    private void setFragmentVisible(TodoListFragment todoListFragment) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        fragmentTransaction
-                .show(todoListFragment)
-                .commit();
+    private void setVisibleFragment(String todoListFragmentName) {
+        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
     }
 
 }
