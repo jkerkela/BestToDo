@@ -58,7 +58,7 @@ class NavigationViewHandler {
     }
 
     private void addListenerToTodoListActionsPopupWindow(View popupView, final String todoListName) {
-        TextView setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoList);
+        ImageButton setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoListButton);
         setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +66,7 @@ class NavigationViewHandler {
                 mDrawerLayout.closeDrawers();
             }
         });
-        TextView renameTodoListButton = popupView.findViewById(R.id.RenameTodoList);
+        ImageButton renameTodoListButton = popupView.findViewById(R.id.RenameTodoListButton);
         renameTodoListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ class NavigationViewHandler {
                 addListenerToRenameTodoListNamingPopupWindow(popupView, textInputPopupWindow, todoListName);
             }
         });
-        TextView removeTodoListButton = popupView.findViewById(R.id.RemoveTodoList);
+        ImageButton removeTodoListButton = popupView.findViewById(R.id.RemoveTodoListButton);
         removeTodoListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
