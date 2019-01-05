@@ -3,6 +3,7 @@ package com.example.j.besttodo;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ public class TodoListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
         todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        todoListView.addItemDecoration(itemDecorator);
         todoListView.setItemAnimator(new DefaultItemAnimator());
         mTodoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
         todoListView.setAdapter(mTodoListAdapter);
