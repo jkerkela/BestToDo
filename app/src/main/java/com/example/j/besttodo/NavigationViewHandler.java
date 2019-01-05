@@ -85,6 +85,15 @@ class NavigationViewHandler {
         });
     }
 
+    private void setCurrentTodoList(String todoListName) {
+        setVisibleFragment(todoListName);
+        mActionBar.setTitle(todoListName);
+    }
+
+    void setVisibleFragment(String todoListFragmentName) {
+        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
+    }
+
     private void removeTodoListFragment(String todoListName) {
         removeTodoListFromNavigationView(todoListName);
         mTodoListFragmentHandler.removeFragment(todoListName);
@@ -119,6 +128,12 @@ class NavigationViewHandler {
         addTodoListToNavigationView(newTodoListName);
     }
 
+    private void addTodoListToNavigationView(String todoListName) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
+        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
+    }
+
     void addNewTodoListFragment(String todoListName) {
         TodoListFragment listFragment = new TodoListFragment();
         listFragment.setName(todoListName);
@@ -126,23 +141,8 @@ class NavigationViewHandler {
         addTodoListToNavigationView(todoListName);
     }
 
-    private void addTodoListToNavigationView(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
-        int todoListIdentifier = todoListName.hashCode();
-        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
-    }
-
     private void renameTodoList(String oldTodoListName, String newTodoListName) {
         mTodoListFragmentHandler.renameFragment(oldTodoListName, newTodoListName);
-    }
-
-    private void setCurrentTodoList(String todoListName) {
-        setVisibleFragment(todoListName);
-        mActionBar.setTitle(todoListName);
-    }
-
-    void setVisibleFragment(String todoListFragmentName) {
-        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
     }
 
     private void addListenerToNewTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow) {
