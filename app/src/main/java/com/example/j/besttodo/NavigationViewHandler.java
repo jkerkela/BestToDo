@@ -43,8 +43,8 @@ class NavigationViewHandler {
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
                             View popupView = mLayoutInflater.inflate(R.layout.todo_list_popup, null);
-                            PopUpProvider.providePopUpWindowOnItemLocation(popupView);
-                            addListenerToTodoListActionsPopupWindow(popupView, todoListName);
+                            PopupWindow todoListActionPopupWindow = PopUpProvider.providePopUpWindowOnItemLocation(popupView);
+                            addListenerToTodoListActionsPopupWindow(popupView, todoListActionPopupWindow, todoListName);
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
                             View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
                             PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
@@ -57,11 +57,12 @@ class NavigationViewHandler {
         );
     }
 
-    private void addListenerToTodoListActionsPopupWindow(View popupView, final String todoListName) {
+    private void addListenerToTodoListActionsPopupWindow(View popupView, final PopupWindow todoListActionPopupWindow, final String todoListName) {
         ImageButton setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoListButton);
         setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                todoListActionPopupWindow.dismiss();
                 setCurrentTodoList(todoListName);
                 mDrawerLayout.closeDrawers();
             }
@@ -70,6 +71,7 @@ class NavigationViewHandler {
         renameTodoListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                todoListActionPopupWindow.dismiss();
                 View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
                 PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
                 PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
@@ -80,6 +82,7 @@ class NavigationViewHandler {
         removeTodoListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                todoListActionPopupWindow.dismiss();
                 removeTodoListFragment(todoListName);
             }
         });
