@@ -5,9 +5,6 @@ import android.app.FragmentTransaction;
 
 import java.util.HashMap;
 
-/**
- * Created by J on 12/15/2018.
- */
 class TodoListFragmentHandler {
 
     private HashMap<String, TodoListFragment> fragmentList = new HashMap<>();

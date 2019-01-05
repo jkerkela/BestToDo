@@ -4,10 +4,6 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
 
-/**
- * Created by J on 12/16/2018.
- */
-
 class ToastProvider {
 
     static void showToastAtCenterOfScreen(String toastText, Context context) {

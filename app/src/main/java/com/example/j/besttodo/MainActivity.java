@@ -11,7 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
-public class MainActivity extends AppCompatActivity {
+class MainActivity extends AppCompatActivity {
 
     TodoListFragmentHandler mTodoListFragmentHandler = new TodoListFragmentHandler(getFragmentManager());
     private ActionBar mSupportActionBar;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initiateNavigationMenu(String todoListName) {
         mNavigationViewHandler = new NavigationViewHandler(this, mTodoListFragmentHandler, mSupportActionBar);
-        mNavigationViewHandler.iniateNavigationView();
+        mNavigationViewHandler.initiateNavigationView();
         mNavigationViewHandler.addNewTodoListFragment(todoListName);
         mNavigationViewHandler.setVisibleFragment(todoListName);
     }

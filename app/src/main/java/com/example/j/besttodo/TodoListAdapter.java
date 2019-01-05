@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 
 import java.util.List;
 
-public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder> {
+class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder> {
 
     private final List<TodoItem> mTodoItemList;
     private Context mContext;

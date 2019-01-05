@@ -7,9 +7,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-/**
- * Created by J on 12/16/2018.
- */
 class PopUpProvider {
 
     static PopupWindow providePopUpWindowOnViewAtClickLocation(View popupView, View view) {

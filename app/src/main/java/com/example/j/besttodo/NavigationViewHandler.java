@@ -16,9 +16,6 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-/**
- * Created by J on 1/4/2019.
- */
 class NavigationViewHandler {
 
     private final NavigationView mNavigationView;
@@ -37,7 +34,7 @@ class NavigationViewHandler {
         mActionBar = actionBar;
     }
 
-    void iniateNavigationView() {
+    void initiateNavigationView() {
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
