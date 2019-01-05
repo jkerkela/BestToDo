@@ -15,7 +15,7 @@ import java.util.List;
 public class TodoListFragment extends Fragment {
 
     private List<TodoItem> mTodoItemsList = new ArrayList<>();
-    TodoListAdapter todoListAdapter;
+    TodoListAdapter mTodoListAdapter;
     private String name;
 
     @Override
@@ -30,15 +30,15 @@ public class TodoListFragment extends Fragment {
         RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
         todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         todoListView.setItemAnimator(new DefaultItemAnimator());
-        todoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
-        todoListView.setAdapter(todoListAdapter);
+        mTodoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
+        todoListView.setAdapter(mTodoListAdapter);
     }
 
     public void addNewTodoItem() {
         TodoItem todoItem = new TodoItem();
         mTodoItemsList.add(todoItem);
-        todoListAdapter.notifyItemInserted(mTodoItemsList.size() - 1);
-        todoListAdapter.notifyDataSetChanged();
+        mTodoListAdapter.notifyItemInserted(mTodoItemsList.size() - 1);
+        mTodoListAdapter.notifyDataSetChanged();
     }
 
     public void setName(String name) {
