@@ -15,7 +15,7 @@ class MainActivity extends AppCompatActivity {
 
     TodoListFragmentHandler mTodoListFragmentHandler = new TodoListFragmentHandler(getFragmentManager());
     private ActionBar mSupportActionBar;
-    private NavigationViewHandler mNavigationViewHandler;
+    private ViewHandler mViewHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mNavigationViewHandler.openNavigationDrawer();
+                mViewHandler.openNavigationDrawer();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -62,10 +62,10 @@ class MainActivity extends AppCompatActivity {
     }
 
     private void initiateNavigationMenu(String todoListName) {
-        mNavigationViewHandler = new NavigationViewHandler(this, mTodoListFragmentHandler, mSupportActionBar);
-        mNavigationViewHandler.initiateNavigationView();
-        mNavigationViewHandler.addNewTodoListFragment(todoListName);
-        mNavigationViewHandler.setVisibleFragment(todoListName);
+        mViewHandler = new ViewHandler(this, mTodoListFragmentHandler, mSupportActionBar);
+        mViewHandler.initiateNavigationView();
+        mViewHandler.addNewTodoListFragment(todoListName);
+        mViewHandler.setVisibleFragment(todoListName);
     }
 
     private void initiateCustomToolbar(String todoListName) {

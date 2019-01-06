@@ -14,9 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
-class NavigationViewHandler {
+class ViewHandler {
 
     private final NavigationView mNavigationView;
     private final LayoutInflater mLayoutInflater;
@@ -25,7 +24,7 @@ class NavigationViewHandler {
     private DrawerLayout mDrawerLayout;
     private TodoListFragmentHandler mTodoListFragmentHandler;
 
-    NavigationViewHandler(Activity context, TodoListFragmentHandler todoListFragmentHandler, ActionBar actionBar) {
+    ViewHandler(Activity context, TodoListFragmentHandler todoListFragmentHandler, ActionBar actionBar) {
         mContext = context;
         mNavigationView = context.findViewById(R.id.nav_view);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -39,7 +38,6 @@ class NavigationViewHandler {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                        menuItem.setChecked(true);
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
                             View popupView = mLayoutInflater.inflate(R.layout.todo_list_popup, null);
