@@ -6,9 +6,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.j.besttodo.util.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +32,19 @@ public class TodoListFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
+        attachAdapter(todoListView);
+    }
+
+    private void attachAdapter(RecyclerView todoListView) {
+        mTodoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
         todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         todoListView.addItemDecoration(itemDecorator);
         todoListView.setItemAnimator(new DefaultItemAnimator());
-        mTodoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
         todoListView.setAdapter(mTodoListAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mTodoListAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(todoListView);
     }
 
     public void addNewTodoItem() {

@@ -1,4 +1,4 @@
-package com.example.j.besttodo;
+package com.example.j.besttodo.util.ui;
 
 import android.content.Context;
 import android.view.Gravity;

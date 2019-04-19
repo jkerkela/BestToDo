@@ -1,4 +1,4 @@
-package com.example.j.besttodo;
+package com.example.j.besttodo.util.ui;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-class PopUpProvider {
+public class PopUpProvider {
 
-    static PopupWindow providePopUpWindowOnViewAtClickLocation(View popupView, View view) {
+    public static PopupWindow providePopUpWindowOnViewAtClickLocation(View popupView, View view) {
         int[] locationCoordinates = locatePosition(view);
         PopupWindow popupWindow = getPopupWithDefaultParameters(popupView);
         popupWindow.showAsDropDown(popupView, locationCoordinates[0], locationCoordinates[1]);

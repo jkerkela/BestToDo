@@ -10,9 +10,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
+import com.example.j.besttodo.util.ui.PopUpProvider;
+import com.example.j.besttodo.util.ItemTouchHelperAdapter;
+
+import java.util.Collections;
 import java.util.List;
 
-class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder> {
+class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
+        implements ItemTouchHelperAdapter {
 
     private final List<TodoItem> mTodoItemList;
     private Context mContext;
@@ -49,6 +54,27 @@ class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
     @Override
     public int getItemCount() {
         return mTodoItemList.size();
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mTodoItemList, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mTodoItemList, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mTodoItemList.remove(position);
+        notifyItemRemoved(position);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

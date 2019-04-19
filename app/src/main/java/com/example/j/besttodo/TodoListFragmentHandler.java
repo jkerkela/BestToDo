@@ -5,7 +5,7 @@ import android.app.FragmentTransaction;
 
 import java.util.HashMap;
 
-class TodoListFragmentHandler {
+public class TodoListFragmentHandler {
 
     private HashMap<String, TodoListFragment> fragmentList = new HashMap<>();
     private FragmentManager mFragmentManager;
@@ -15,7 +15,7 @@ class TodoListFragmentHandler {
         mFragmentManager = fragmentManager;
     }
 
-    void addFragment(TodoListFragment listFragment) {
+    public void addFragment(TodoListFragment listFragment) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction
                 .add(R.id.listFragmentContainer, listFragment)
@@ -28,7 +28,7 @@ class TodoListFragmentHandler {
         fragmentList.put(fragmentName, todoListFragment);
     }
 
-    void removeFragment(String fragmentName) {
+    public void removeFragment(String fragmentName) {
         TodoListFragment todoListFragment = getFragmentByNameOrNull(fragmentName);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction
@@ -41,14 +41,14 @@ class TodoListFragmentHandler {
         fragmentList.remove(fragmentName);
     }
 
-    void renameFragment(String oldTodoListName, String newTodoListName) {
+    public void renameFragment(String oldTodoListName, String newTodoListName) {
         TodoListFragment fragmentToRename = getFragmentByNameOrNull(oldTodoListName);
         removeFragmentEntry(oldTodoListName);
         fragmentToRename.setName(newTodoListName);
         addFragmentEntry(fragmentToRename);
     }
 
-    void setVisibleFragment(String todoListFragmentName) {
+    public void setVisibleFragment(String todoListFragmentName) {
         hideCurrentFragment();
         TodoListFragment todoListFragment = getFragmentByNameOrNull(todoListFragmentName);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
@@ -75,7 +75,7 @@ class TodoListFragmentHandler {
         return currentVisibleTodoListFragment;
     }
 
-    boolean doesFragmentExistWithName(String listNameToCheck) {
+    public boolean doesFragmentExistWithName(String listNameToCheck) {
         TodoListFragment todoListFragmentToNotExist = getFragmentByNameOrNull(listNameToCheck);
         return todoListFragmentToNotExist == null;
     }

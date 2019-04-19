@@ -1,4 +1,4 @@
-package com.example.j.besttodo;
+package com.example.j.besttodo.util.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
-class ViewHandler {
+import com.example.j.besttodo.R;
+import com.example.j.besttodo.TodoListFragment;
+import com.example.j.besttodo.TodoListFragmentHandler;
+import com.example.j.besttodo.util.ui.PopUpProvider;
+import com.example.j.besttodo.util.ui.ToastProvider;
+
+public class ViewHandler {
 
     private final NavigationView mNavigationView;
     private final LayoutInflater mLayoutInflater;
@@ -24,7 +30,7 @@ class ViewHandler {
     private DrawerLayout mDrawerLayout;
     private TodoListFragmentHandler mTodoListFragmentHandler;
 
-    ViewHandler(Activity context, TodoListFragmentHandler todoListFragmentHandler, ActionBar actionBar) {
+    public ViewHandler(Activity context, TodoListFragmentHandler todoListFragmentHandler, ActionBar actionBar) {
         mContext = context;
         mNavigationView = context.findViewById(R.id.nav_view);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -33,7 +39,7 @@ class ViewHandler {
         mActionBar = actionBar;
     }
 
-    void initiateNavigationView() {
+    public void initiateNavigationView() {
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -91,7 +97,7 @@ class ViewHandler {
         mActionBar.setTitle(todoListName);
     }
 
-    void setVisibleFragment(String todoListFragmentName) {
+    public void setVisibleFragment(String todoListFragmentName) {
         mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
     }
 
@@ -135,7 +141,7 @@ class ViewHandler {
         navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
     }
 
-    void addNewTodoListFragment(String todoListName) {
+    public void addNewTodoListFragment(String todoListName) {
         TodoListFragment listFragment = new TodoListFragment();
         listFragment.setName(todoListName);
         mTodoListFragmentHandler.addFragment(listFragment);
@@ -167,7 +173,7 @@ class ViewHandler {
         return mTodoListFragmentHandler.doesFragmentExistWithName(listNameToCheck);
     }
 
-    void openNavigationDrawer() {
+    public void openNavigationDrawer() {
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
 }

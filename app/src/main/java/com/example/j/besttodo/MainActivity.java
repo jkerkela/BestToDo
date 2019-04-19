@@ -11,6 +11,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
+import com.example.j.besttodo.util.ui.ViewHandler;
+
 class MainActivity extends AppCompatActivity {
 
     TodoListFragmentHandler mTodoListFragmentHandler = new TodoListFragmentHandler(getFragmentManager());
