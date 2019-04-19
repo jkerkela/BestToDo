@@ -8,19 +8,19 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/TodoItemRemoveText"
+        android:id="@+id/TodoItemOptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/removeTodoItemText"
+        android:text="@string/todoItemOptionPlaceholderText"
         android:textSize="18sp"/>
 
     <ImageButton
-        android:id="@+id/TodoItemRemoveButton"
+        android:id="@+id/TodoItemOptionButton"
         android:src="@drawable/baseline_delete_black_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/TodoItemRemoveText"
+        android:layout_toEndOf="@+id/TodoItemOptionText"
         android:background="@android:color/background_light"
         android:paddingStart="30dp"
         android:paddingEnd="10dp"

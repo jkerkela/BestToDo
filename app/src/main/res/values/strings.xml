@@ -2,7 +2,7 @@
     <string name="app_name">BestToDo</string>
     <string name="todoItemText">Add ToDo text here</string>
     <string name="addTodoItemHint">Add new ToDo</string>
-    <string name="removeTodoItemText">Remove Todo Item</string>
+    <string name="todoItemOptionPlaceholderText">PlaceHolder</string>
     <string name="navigation_drawer_open">nav_draver_open</string>
     <string name="navigation_drawer_close">nav_draver_close</string>
     <string name="custom_nav_background">Custom nav background</string>

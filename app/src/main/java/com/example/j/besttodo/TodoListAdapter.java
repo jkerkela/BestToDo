@@ -2,6 +2,7 @@ package com.example.j.besttodo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,19 +28,20 @@ class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
         mContext = context;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View todoItemView = layoutInflater.inflate(R.layout.todo_item, parent, false);
         return new MyViewHolder(todoItemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
     }
 
     @Override
-    public void onViewRecycled(MyViewHolder holder) {
+    public void onViewRecycled(@NonNull MyViewHolder holder) {
         if(isAddedToListAsNew(holder)) {
             String defaultTodoItemText = mContext.getResources().getString(R.string.todoItemText);
             holder.todoItemText.setText(defaultTodoItemText);
@@ -96,6 +98,7 @@ class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
                 }
             });
 
+            //TODO: placeholder button for TODO item actions
             todoItemActionButton = view.findViewById(R.id.todoItemActionButton);
             todoItemActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,20 +109,6 @@ class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
                         popupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
                     }
                     PopupWindow todoItemPopup = PopUpProvider.providePopUpWindowOnViewAtClickLocation(popupView, view);
-                    addListenerToRemoveTodoItemButtonOnPopupWindow(popupView, todoItemPopup);
-                }
-            });
-        }
-
-        private void addListenerToRemoveTodoItemButtonOnPopupWindow(View todoItemPopupView, final PopupWindow todoItemPopup) {
-            ImageButton todoItemRemoveButton = todoItemPopupView.findViewById(R.id.TodoItemRemoveButton);
-            todoItemRemoveButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getLayoutPosition();
-                    mTodoItemList.remove(position);
-                    notifyItemRemoved(position);
-                    todoItemPopup.dismiss();
                 }
             });
         }
