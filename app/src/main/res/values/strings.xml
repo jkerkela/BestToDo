@@ -12,4 +12,5 @@
     <string name="set_todo_list_as_current">Set list as current</string>
     <string name="rename_todo_list">Rename list</string>
     <string name="remove_todo_list">Remove list</string>
+    <string name="todo_lists_nav_menu_title">Todo lists:</string>
 </resources>

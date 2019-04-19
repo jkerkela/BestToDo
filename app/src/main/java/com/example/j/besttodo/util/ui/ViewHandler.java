@@ -18,8 +18,6 @@ import android.widget.PopupWindow;
 import com.example.j.besttodo.R;
 import com.example.j.besttodo.TodoListFragment;
 import com.example.j.besttodo.TodoListFragmentHandler;
-import com.example.j.besttodo.util.ui.PopUpProvider;
-import com.example.j.besttodo.util.ui.ToastProvider;
 
 public class ViewHandler {
 
