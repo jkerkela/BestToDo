@@ -136,7 +136,10 @@ public class ViewHandler {
     private void addTodoListToNavigationView(String todoListName) {
         Menu navigationViewMenu = mNavigationView.getMenu();
         int todoListIdentifier = todoListName.hashCode();
-        navigationViewMenu.add(R.id.group_todo_list_items , todoListIdentifier, Menu.NONE, todoListName);
+        navigationViewMenu.add(R.id.group_todo_list_items,
+                todoListIdentifier,
+                Menu.NONE,
+                todoListName).setIcon(R.drawable.baseline_event_note_black_18);
     }
 
     public void addNewTodoListFragment(String todoListName) {

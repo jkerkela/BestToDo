@@ -3,13 +3,16 @@
 
     <group
         android:id="@+id/group_menu_items">
-        <item android:id="@+id/add_new_todo_list"
-            android:title="@string/add_new_todo_list" />
+        <item
+            android:id="@+id/add_new_todo_list"
+            android:icon="@drawable/baseline_add_black_18"
+            android:title="@string/add_new_todo_list"/>
     </group>
 
     <group
         android:id="@+id/group_todo_list_items">
-        <item android:id="@+id/nav_todo_lists_title"
+        <item
+            android:id="@+id/nav_todo_lists_title"
             android:title="@string/todo_lists_nav_menu_title"
             android:enabled="false"/>
     </group>
