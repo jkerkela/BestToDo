@@ -63,10 +63,39 @@
         android:background="?android:attr/listDivider"/>
 
     <TextView
-        android:id="@+id/RemoveTodoList"
+        android:id="@+id/SetTodoListIcon"
         android:layout_width="150dp"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:layout_below="@id/RenameTodoListDivider"
+        android:gravity="center_vertical"
+        android:text="@string/set_todo_list_icon"
+        android:textSize="18sp"/>
+
+    <ImageButton
+        android:id="@+id/SetTodoListIconButton"
+        android:src="@drawable/baseline_image_black_18"
+        android:layout_width="wrap_content"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_toEndOf="@+id/SetTodoListIcon"
+        android:layout_below="@id/RenameTodoListDivider"
+        android:background="@android:color/background_light"
+        android:paddingStart="30dp"
+        android:paddingEnd="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+    <View
+        android:id="@+id/SetTodoListIconDivider"
+        android:layout_width="200dp"
+        android:layout_height="2dp"
+        android:layout_below="@id/SetTodoListIcon"
+        android:background="?android:attr/listDivider"/>
+
+    <TextView
+        android:id="@+id/RemoveTodoList"
+        android:layout_width="150dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:layout_below="@id/SetTodoListIconDivider"
         android:gravity="center_vertical"
         android:text="@string/remove_todo_list"
         android:textSize="18sp"/>
@@ -77,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="?android:attr/listPreferredItemHeight"
         android:layout_toEndOf="@+id/RemoveTodoList"
-        android:layout_below="@id/RenameTodoListDivider"
+        android:layout_below="@id/SetTodoListIconDivider"
         android:background="@android:color/background_light"
         android:paddingStart="30dp"
         android:paddingEnd="10dp"

@@ -13,4 +13,5 @@
     <string name="rename_todo_list">Rename list</string>
     <string name="remove_todo_list">Remove list</string>
     <string name="todo_lists_nav_menu_title">Todo lists:</string>
+    <string name="set_todo_list_icon">Set icon</string>
 </resources>

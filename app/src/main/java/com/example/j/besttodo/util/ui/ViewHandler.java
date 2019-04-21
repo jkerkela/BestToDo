@@ -88,6 +88,14 @@ public class ViewHandler {
                 removeTodoListFragment(todoListName);
             }
         });
+        ImageButton setTodoListIconButton = popupView.findViewById(R.id.SetTodoListIconButton);
+        setTodoListIconButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                todoListActionPopupWindow.dismiss();
+                setTodoListIcon(todoListName);
+            }
+        });
     }
 
     private void setCurrentTodoList(String todoListName) {
@@ -102,6 +110,13 @@ public class ViewHandler {
     private void removeTodoListFragment(String todoListName) {
         removeTodoListFromNavigationView(todoListName);
         mTodoListFragmentHandler.removeFragment(todoListName);
+    }
+
+    private void setTodoListIcon(String todoListName) {
+        View popupView = mLayoutInflater.inflate(R.layout.todo_list_icon_popup, null);
+        PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+        PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
+        //TODO: add listeners to grid icons
     }
 
     private void removeTodoListFromNavigationView(String todoListName) {
