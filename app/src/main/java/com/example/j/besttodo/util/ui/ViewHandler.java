@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class ViewHandler {
 
+    private final static String NON_UNIQUE_NAME_ERROR_TEXT = "TODO List with set name already exists!";
     private final NavigationView mNavigationView;
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
@@ -62,6 +63,30 @@ public class ViewHandler {
         );
     }
 
+    public void addNewTodoListFragment(String todoListName) {
+        TodoListFragment listFragment = new TodoListFragment();
+        listFragment.setName(todoListName);
+        mTodoListFragmentHandler.addFragment(listFragment);
+        addTodoListToNavigationView(todoListName);
+    }
+
+    public void setVisibleFragment(String todoListFragmentName) {
+        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
+    }
+
+    public void openNavigationDrawer() {
+        mDrawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    private void addTodoListToNavigationView(String todoListName) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
+        navigationViewMenu.add(R.id.group_todo_list_items,
+                todoListIdentifier,
+                Menu.NONE,
+                todoListName).setIcon(R.drawable.baseline_event_note_black_18);
+    }
+
     private void addListenerToTodoListActionsPopupWindow(View popupView, final PopupWindow todoListActionPopupWindow, final String todoListName) {
         ImageButton setTodoListAsCurrentButton = popupView.findViewById(R.id.SetCurrentTodoListButton);
         setTodoListAsCurrentButton.setOnClickListener(new View.OnClickListener() {
@@ -77,18 +102,7 @@ public class ViewHandler {
             @Override
             public void onClick(View view) {
                 todoListActionPopupWindow.dismiss();
-                View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
-                PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
-                PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
-                addListenerToRenameTodoListNamingPopupWindow(popupView, textInputPopupWindow, todoListName);
-            }
-        });
-        ImageButton removeTodoListButton = popupView.findViewById(R.id.RemoveTodoListButton);
-        removeTodoListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                todoListActionPopupWindow.dismiss();
-                removeTodoListFragment(todoListName);
+                renameTodoList(todoListName);
             }
         });
         ImageButton setTodoListIconButton = popupView.findViewById(R.id.SetTodoListIconButton);
@@ -99,6 +113,14 @@ public class ViewHandler {
                 setTodoListIcon(todoListName);
             }
         });
+        ImageButton removeTodoListButton = popupView.findViewById(R.id.RemoveTodoListButton);
+        removeTodoListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                todoListActionPopupWindow.dismiss();
+                removeTodoListFragment(todoListName);
+            }
+        });
     }
 
     private void setCurrentTodoList(String todoListName) {
@@ -106,8 +128,42 @@ public class ViewHandler {
         mActionBar.setTitle(todoListName);
     }
 
-    public void setVisibleFragment(String todoListFragmentName) {
-        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
+    private void renameTodoList(String todoListName) {
+        View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
+        PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+        PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
+        addListenerToRenameTodoListNamingPopupWindow(popupView, textInputPopupWindow, todoListName);
+    }
+
+    private void addListenerToRenameTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow, final String todoListName) {
+        ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
+        final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
+        setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String InputText = todoListNameText.getText().toString();
+                if(isTodoListNameUnique(InputText)) {
+                    renameTodoListOnNavigationView(todoListName, InputText);
+                    renameTodoListFragment(todoListName, InputText);
+                    textInputPopupWindow.dismiss();
+                } else {
+                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, mContext);
+                }
+            }
+        });
+    }
+
+    private boolean isTodoListNameUnique(String listNameToCheck) {
+        return mTodoListFragmentHandler.doesFragmentExistWithName(listNameToCheck);
+    }
+
+    private void renameTodoListOnNavigationView(String oldTodoListName, String newTodoListName) {
+        removeTodoListFromNavigationView(oldTodoListName);
+        addTodoListToNavigationView(newTodoListName);
+    }
+
+    private void renameTodoListFragment(String oldTodoListName, String newTodoListName) {
+        mTodoListFragmentHandler.renameFragment(oldTodoListName, newTodoListName);
     }
 
     private void removeTodoListFragment(String todoListName) {
@@ -115,18 +171,24 @@ public class ViewHandler {
         mTodoListFragmentHandler.removeFragment(todoListName);
     }
 
+    private void removeTodoListFromNavigationView(String todoListName) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
+        navigationViewMenu.removeItem(todoListIdentifier);
+    }
+
     private void setTodoListIcon(String todoListName) {
         View popupView = mLayoutInflater.inflate(R.layout.todo_list_icon_popup, null);
         final PopupWindow iconChangePopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
         PopUpProvider.dimBackgroundOfPopup(iconChangePopupWindow, mContext);
         ArrayList<View> iconButtons = popupView.getTouchables();
-        addListenerToIconButtons(iconButtons, popupView, todoListName, iconChangePopupWindow);
+        addListenerToPopUpIconButtons(iconButtons, popupView, todoListName, iconChangePopupWindow);
     }
 
-    private void addListenerToIconButtons(ArrayList<View> iconButtons,
-                                          View popupView,
-                                          final String todoListName,
-                                          final PopupWindow iconChangePopupWindow) {
+    private void addListenerToPopUpIconButtons(ArrayList<View> iconButtons,
+                                               View popupView,
+                                               final String todoListName,
+                                               final PopupWindow iconChangePopupWindow) {
         for (int i = 0; i < iconButtons.size(); i++) {
             int viewId = iconButtons.get(i).getId();
             ImageButton setTodoListNameButton = popupView.findViewById(viewId);
@@ -148,55 +210,6 @@ public class ViewHandler {
         return navigationViewMenu.findItem(todoListIdentifier);
     }
 
-    private void removeTodoListFromNavigationView(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
-        int todoListIdentifier = todoListName.hashCode();
-        navigationViewMenu.removeItem(todoListIdentifier);
-    }
-
-    private void addListenerToRenameTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow, final String todoListName) {
-        ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
-        final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
-        setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String InputText = todoListNameText.getText().toString();
-                if(isTodoListNameUnique(InputText)) {
-                    renameTodoListOnNavigationView(todoListName, InputText);
-                    renameTodoList(todoListName, InputText);
-                    textInputPopupWindow.dismiss();
-                } else {
-                    ToastProvider.showToastAtCenterOfScreen("TODO List with set name already exists!", mContext);
-                }
-            }
-        });
-    }
-
-    private void renameTodoListOnNavigationView(String oldTodoListName, String newTodoListName) {
-        removeTodoListFromNavigationView(oldTodoListName);
-        addTodoListToNavigationView(newTodoListName);
-    }
-
-    private void addTodoListToNavigationView(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
-        int todoListIdentifier = todoListName.hashCode();
-        navigationViewMenu.add(R.id.group_todo_list_items,
-                todoListIdentifier,
-                Menu.NONE,
-                todoListName).setIcon(R.drawable.baseline_event_note_black_18);
-    }
-
-    public void addNewTodoListFragment(String todoListName) {
-        TodoListFragment listFragment = new TodoListFragment();
-        listFragment.setName(todoListName);
-        mTodoListFragmentHandler.addFragment(listFragment);
-        addTodoListToNavigationView(todoListName);
-    }
-
-    private void renameTodoList(String oldTodoListName, String newTodoListName) {
-        mTodoListFragmentHandler.renameFragment(oldTodoListName, newTodoListName);
-    }
-
     private void addListenerToNewTodoListNamingPopupWindow(View popupView, final PopupWindow textInputPopupWindow) {
         ImageButton setTodoListNameButton = popupView.findViewById(R.id.setTodoListNameButton);
         final EditText todoListNameText = popupView.findViewById(R.id.todoListName);
@@ -208,17 +221,9 @@ public class ViewHandler {
                     addNewTodoListFragment(InputText);
                     textInputPopupWindow.dismiss();
                 } else {
-                    ToastProvider.showToastAtCenterOfScreen("TODO List with set name already exists!", mContext);
+                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, mContext);
                 }
             }
         });
-    }
-
-    private boolean isTodoListNameUnique(String listNameToCheck) {
-        return mTodoListFragmentHandler.doesFragmentExistWithName(listNameToCheck);
-    }
-
-    public void openNavigationDrawer() {
-        mDrawerLayout.openDrawer(GravityCompat.START);
     }
 }
