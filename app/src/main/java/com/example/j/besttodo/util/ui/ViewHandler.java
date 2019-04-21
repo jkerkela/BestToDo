@@ -2,6 +2,7 @@ package com.example.j.besttodo.util.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,8 @@ import android.widget.PopupWindow;
 import com.example.j.besttodo.R;
 import com.example.j.besttodo.TodoListFragment;
 import com.example.j.besttodo.TodoListFragmentHandler;
+
+import java.util.ArrayList;
 
 public class ViewHandler {
 
@@ -114,9 +117,35 @@ public class ViewHandler {
 
     private void setTodoListIcon(String todoListName) {
         View popupView = mLayoutInflater.inflate(R.layout.todo_list_icon_popup, null);
-        PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
-        PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
-        //TODO: add listeners to grid icons
+        final PopupWindow iconChangePopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
+        PopUpProvider.dimBackgroundOfPopup(iconChangePopupWindow, mContext);
+        ArrayList<View> iconButtons = popupView.getTouchables();
+        addListenerToIconButtons(iconButtons, popupView, todoListName, iconChangePopupWindow);
+    }
+
+    private void addListenerToIconButtons(ArrayList<View> iconButtons,
+                                          View popupView,
+                                          final String todoListName,
+                                          final PopupWindow iconChangePopupWindow) {
+        for (int i = 0; i < iconButtons.size(); i++) {
+            int viewId = iconButtons.get(i).getId();
+            ImageButton setTodoListNameButton = popupView.findViewById(viewId);
+            final Drawable todoIconToSet = setTodoListNameButton.getDrawable();
+            setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MenuItem todoList = getTodoListIdentifierByName(todoListName);
+                    todoList.setIcon(todoIconToSet);
+                    iconChangePopupWindow.dismiss();
+                }
+            });
+        }
+    }
+
+    private MenuItem getTodoListIdentifierByName(String todoListName) {
+        Menu navigationViewMenu = mNavigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
+        return navigationViewMenu.findItem(todoListIdentifier);
     }
 
     private void removeTodoListFromNavigationView(String todoListName) {

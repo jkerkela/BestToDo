@@ -9,6 +9,7 @@
     android:padding="20dp">
 
     <ImageButton
+        android:id="@+id/navMenuMoneyIcon"
         android:src="@drawable/baseline_attach_money_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +19,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuFitnessIcon"
         android:src="@drawable/baseline_fitness_center_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuWorkIcon"
         android:src="@drawable/baseline_work_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +39,7 @@
         android:padding="5dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuHomeIcon"
         android:src="@drawable/baseline_home_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +49,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuAttentionIcon"
         android:src="@drawable/baseline_error_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,6 +59,7 @@
         android:padding="5dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuDefaultIcon"
         android:src="@drawable/baseline_event_note_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,6 +69,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuFoodIcon"
         android:src="@drawable/baseline_restaurant_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +79,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuTravelIcon"
         android:src="@drawable/baseline_flight_takeoff_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,6 +89,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuFavouriteIcon"
         android:src="@drawable/baseline_grade_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -90,6 +99,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuRelationsIcon"
         android:src="@drawable/baseline_group_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,6 +109,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuOutsideIcon"
         android:src="@drawable/baseline_image_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -108,6 +119,7 @@
         android:padding="10dp"/>
 
     <ImageButton
+        android:id="@+id/navMenuSchoolIcon"
         android:src="@drawable/baseline_school_black_48"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
