@@ -84,7 +84,7 @@ public class ViewHandler {
         navigationViewMenu.add(R.id.group_todo_list_items,
                 todoListIdentifier,
                 Menu.NONE,
-                todoListName).setIcon(R.drawable.baseline_event_note_black_18);
+                todoListName);
     }
 
     private void addListenerToTodoListActionsPopupWindow(View popupView, final PopupWindow todoListActionPopupWindow, final String todoListName) {
