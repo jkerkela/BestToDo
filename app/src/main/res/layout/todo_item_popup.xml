@@ -8,19 +8,19 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/TodoItemOptionText"
+        android:id="@+id/TodoItemSetDateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/todoItemOptionPlaceholderText"
+        android:text="@string/todoItemDateSetter"
         android:textSize="18sp"/>
 
     <ImageButton
-        android:id="@+id/TodoItemOptionButton"
-        android:src="@drawable/baseline_delete_black_24"
+        android:id="@+id/TodoItemSetDateButton"
+        android:src="@drawable/baseline_date_range_black_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/TodoItemOptionText"
+        android:layout_toEndOf="@+id/TodoItemSetDateText"
         android:background="@android:color/background_light"
         android:paddingStart="30dp"
         android:paddingEnd="10dp"

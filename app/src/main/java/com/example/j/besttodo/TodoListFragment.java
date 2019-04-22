@@ -19,7 +19,7 @@ import java.util.List;
 public class TodoListFragment extends Fragment {
 
     private List<TodoItem> mTodoItemsList = new ArrayList<>();
-    TodoListAdapter mTodoListAdapter;
+    private TodoListAdapter mTodoListAdapter;
     private String name;
 
     @Override
@@ -48,7 +48,7 @@ public class TodoListFragment extends Fragment {
     }
 
     public void addNewTodoItem() {
-        TodoItem todoItem = new TodoItem();
+        TodoItem todoItem = new TodoItem(mTodoListAdapter);
         mTodoItemsList.add(todoItem);
         mTodoListAdapter.notifyItemInserted(mTodoItemsList.size() - 1);
         mTodoListAdapter.notifyDataSetChanged();

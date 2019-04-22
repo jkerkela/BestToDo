@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">BestToDo</string>
     <string name="todoItemText">Add ToDo text here</string>
-    <string name="addTodoItemHint">Add new ToDo</string>
-    <string name="todoItemOptionPlaceholderText">PlaceHolder</string>
+    <string name="addTodoItemHint">Add new Todo</string>
+    <string name="todoItemDateSetter">Set Todo item date</string>
     <string name="navigation_drawer_open">nav_draver_open</string>
     <string name="navigation_drawer_close">nav_draver_close</string>
     <string name="custom_nav_background">Custom nav background</string>
@@ -14,4 +14,5 @@
     <string name="remove_todo_list">Remove list</string>
     <string name="todo_lists_nav_menu_title">Todo lists:</string>
     <string name="set_todo_list_icon">Set icon</string>
+    <string name="todoItemSchedulePlaceholder">Schedule: N/A</string>
 </resources>
