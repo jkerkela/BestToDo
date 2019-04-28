@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.j.besttodo.TodoItem;
 
@@ -30,7 +29,7 @@ public class DatePickerFragment extends DialogFragment {
         return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
     }
 
-    public void setTodoItem(TodoItem todoItem, EditText todoItemDate) {
+    public void setTodoItemHandle(TodoItem todoItem, EditText todoItemDate) {
         this.todoItem = todoItem;
         this.todoItemDate = todoItemDate;
     }
@@ -39,9 +38,6 @@ public class DatePickerFragment extends DialogFragment {
             new DatePickerDialog.OnDateSetListener() {
                 public void onDateSet(DatePicker view, int year, int month, int day) {
                     setTodoItemDate(view);
-                    Toast.makeText(getActivity(), "selected date is " + view.getYear() +
-                            " / " + (view.getMonth()+1) +
-                            " / " + view.getDayOfMonth(), Toast.LENGTH_SHORT).show();
                 }
             };
 
@@ -51,6 +47,6 @@ public class DatePickerFragment extends DialogFragment {
         int year =  view.getYear();
         String date = "Schedule: " + day + "-" + month + "-" + year;
         todoItemDate.setText(date);
-        todoItem.setDate(day, month, year);
+        todoItem.setSchedule(date);
     }
 }

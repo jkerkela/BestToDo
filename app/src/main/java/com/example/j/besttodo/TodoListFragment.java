@@ -18,9 +18,10 @@ import java.util.List;
 
 public class TodoListFragment extends Fragment {
 
-    private List<TodoItem> mTodoItemsList = new ArrayList<>();
+    private List<TodoItem> mTodoItems = new ArrayList<>();
     private TodoListAdapter mTodoListAdapter;
     private String name;
+    private List<TodoItem> pendingTodoItems = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -33,10 +34,11 @@ public class TodoListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
         attachAdapter(todoListView);
+        addPendingTodoItemsToList();
     }
 
     private void attachAdapter(RecyclerView todoListView) {
-        mTodoListAdapter = new TodoListAdapter(mTodoItemsList, getActivity());
+        mTodoListAdapter = new TodoListAdapter(mTodoItems, getActivity());
         todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         todoListView.addItemDecoration(itemDecorator);
@@ -47,11 +49,24 @@ public class TodoListFragment extends Fragment {
         touchHelper.attachToRecyclerView(todoListView);
     }
 
-    public void addNewTodoItem() {
-        TodoItem todoItem = new TodoItem(mTodoListAdapter);
-        mTodoItemsList.add(todoItem);
-        mTodoListAdapter.notifyItemInserted(mTodoItemsList.size() - 1);
-        mTodoListAdapter.notifyDataSetChanged();
+    private void addPendingTodoItemsToList() {
+        for(TodoItem item: pendingTodoItems) {
+            addTodoItem(item);
+        }
+    }
+
+    public void addTodoItem(TodoItem item) {
+            if (mTodoListAdapter != null) {
+                mTodoItems.add(item);
+                mTodoListAdapter.notifyItemInserted(mTodoItems.size() - 1);
+                mTodoListAdapter.notifyDataSetChanged();
+            } else {
+                addPendingTodoItem(item);
+            }
+    }
+
+    private void addPendingTodoItem(TodoItem item) {
+        pendingTodoItems.add(item);
     }
 
     public void setName(String name) {
@@ -60,5 +75,9 @@ public class TodoListFragment extends Fragment {
 
     public String getName() {
         return name;
+    }
+
+    public List<TodoItem> getTodoItems() {
+        return mTodoItems;
     }
 }

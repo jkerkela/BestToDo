@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 
 import com.example.j.besttodo.R;
 import com.example.j.besttodo.TodoListFragment;
-import com.example.j.besttodo.TodoListFragmentHandler;
+import com.example.j.besttodo.TodoListFragmentsHandler;
 
 import java.util.ArrayList;
 
@@ -30,13 +30,13 @@ public class ViewHandler {
     private final Context mContext;
     private final ActionBar mActionBar;
     private DrawerLayout mDrawerLayout;
-    private TodoListFragmentHandler mTodoListFragmentHandler;
+    private TodoListFragmentsHandler mTodoListFragmentsHandler;
 
-    public ViewHandler(Activity context, TodoListFragmentHandler todoListFragmentHandler, ActionBar actionBar) {
+    public ViewHandler(Activity context, TodoListFragmentsHandler todoListFragmentsHandler, ActionBar actionBar) {
         mContext = context;
         mNavigationView = context.findViewById(R.id.nav_view);
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mTodoListFragmentHandler = todoListFragmentHandler;
+        mTodoListFragmentsHandler = todoListFragmentsHandler;
         mDrawerLayout = context.findViewById(R.id.drawer_layout);
         mActionBar = actionBar;
     }
@@ -63,17 +63,21 @@ public class ViewHandler {
         );
     }
 
-    public void addNewTodoListFragment(String todoListName) {
+    public TodoListFragment addNewTodoListFragment(String todoListName) {
         TodoListFragment listFragment = new TodoListFragment();
         listFragment.setName(todoListName);
-        mTodoListFragmentHandler.addFragment(listFragment);
+        mTodoListFragmentsHandler.addFragment(listFragment);
         addTodoListToNavigationView(todoListName);
+        return listFragment;
     }
 
-    public void setVisibleFragment(String todoListFragmentName) {
-        mTodoListFragmentHandler.setVisibleFragment(todoListFragmentName);
+    public void setVisibleFragmentByName(String todoListFragmentName) {
+        mTodoListFragmentsHandler.setVisibleFragment(todoListFragmentName);
     }
 
+    public String getVisibleFragmentName(){
+        return mTodoListFragmentsHandler.getVisibleFragment().getName();
+    }
     public void openNavigationDrawer() {
         mDrawerLayout.openDrawer(GravityCompat.START);
     }
@@ -124,7 +128,7 @@ public class ViewHandler {
     }
 
     private void setCurrentTodoList(String todoListName) {
-        setVisibleFragment(todoListName);
+        setVisibleFragmentByName(todoListName);
         mActionBar.setTitle(todoListName);
     }
 
@@ -154,7 +158,7 @@ public class ViewHandler {
     }
 
     private boolean isTodoListNameUnique(String listNameToCheck) {
-        return mTodoListFragmentHandler.doesFragmentExistWithName(listNameToCheck);
+        return mTodoListFragmentsHandler.doesFragmentExistWithName(listNameToCheck);
     }
 
     private void renameTodoListOnNavigationView(String oldTodoListName, String newTodoListName) {
@@ -163,12 +167,12 @@ public class ViewHandler {
     }
 
     private void renameTodoListFragment(String oldTodoListName, String newTodoListName) {
-        mTodoListFragmentHandler.renameFragment(oldTodoListName, newTodoListName);
+        mTodoListFragmentsHandler.renameFragment(oldTodoListName, newTodoListName);
     }
 
     private void removeTodoListFragment(String todoListName) {
         removeTodoListFromNavigationView(todoListName);
-        mTodoListFragmentHandler.removeFragment(todoListName);
+        mTodoListFragmentsHandler.removeFragment(todoListName);
     }
 
     private void removeTodoListFromNavigationView(String todoListName) {

@@ -45,7 +45,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             String defaultTodoItemText = mContext.getResources().getString(R.string.todoItemText);
             holder.todoItemText.setText(defaultTodoItemText);
         }
-
     }
 
     private boolean isAddedToListAsNew(MyViewHolder holder) {
@@ -80,6 +79,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        TodoItem todoItem = mTodoItemList.get(position);
+        String existingText = todoItem.getText();
+        holder.todoItemText.setText(existingText);
+        String existingSchedule = todoItem.getSchedule();
+        holder.todoItemDate.setText(existingSchedule);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -92,7 +96,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             super(view);
             todoItemText = view.findViewById(R.id.todoItemDescription);
             todoItemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if(!hasFocus) {
@@ -122,7 +125,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                 public void onClick(View view) {
                     TodoItem activeTodoItem = mTodoItemList.get(getLayoutPosition());
                     DatePickerFragment datePickerFragment = new DatePickerFragment();
-                    datePickerFragment.setTodoItem(activeTodoItem, todoItemDate);
+                    datePickerFragment.setTodoItemHandle(activeTodoItem, todoItemDate);
                     FragmentManager fragmentManager = ((FragmentActivity) mContext).getSupportFragmentManager();
                     datePickerFragment.show(fragmentManager, "date picker");
                     todoItemPopup.dismiss();

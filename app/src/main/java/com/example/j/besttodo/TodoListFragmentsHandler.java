@@ -3,20 +3,20 @@ package com.example.j.besttodo;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public class TodoListFragmentHandler {
+public class TodoListFragmentsHandler {
 
-    private HashMap<String, TodoListFragment> fragmentList = new HashMap<>();
-    private FragmentManager mFragmentManager;
+    private LinkedHashMap<String, TodoListFragment> todoListfragments = new LinkedHashMap<>();
+    private FragmentManager fragmentManager;
     private TodoListFragment currentVisibleTodoListFragment = null;
 
-    TodoListFragmentHandler(FragmentManager fragmentManager) {
-        mFragmentManager = fragmentManager;
+    TodoListFragmentsHandler(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
 
     public void addFragment(TodoListFragment listFragment) {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .add(R.id.listFragmentContainer, listFragment)
                 .commit();
@@ -25,12 +25,12 @@ public class TodoListFragmentHandler {
 
     private void addFragmentEntry(TodoListFragment todoListFragment) {
         String fragmentName = todoListFragment.getName();
-        fragmentList.put(fragmentName, todoListFragment);
+        todoListfragments.put(fragmentName, todoListFragment);
     }
 
     public void removeFragment(String fragmentName) {
         TodoListFragment todoListFragment = getFragmentByNameOrNull(fragmentName);
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .remove(todoListFragment)
                 .commit();
@@ -38,7 +38,7 @@ public class TodoListFragmentHandler {
     }
 
     private void removeFragmentEntry(String fragmentName) {
-        fragmentList.remove(fragmentName);
+        todoListfragments.remove(fragmentName);
     }
 
     public void renameFragment(String oldTodoListName, String newTodoListName) {
@@ -51,16 +51,19 @@ public class TodoListFragmentHandler {
     public void setVisibleFragment(String todoListFragmentName) {
         hideCurrentFragment();
         TodoListFragment todoListFragment = getFragmentByNameOrNull(todoListFragmentName);
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .show(todoListFragment)
                 .commit();
         currentVisibleTodoListFragment = todoListFragment;
     }
 
+    public TodoListFragment getVisibleFragment() {
+        return currentVisibleTodoListFragment;
+    }
     private void hideCurrentFragment() {
         if (currentVisibleTodoListFragment != null) {
-            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction
                     .hide(currentVisibleTodoListFragment)
                     .commit();
@@ -68,15 +71,19 @@ public class TodoListFragmentHandler {
     }
 
     TodoListFragment getFragmentByNameOrNull(String fragmentName) {
-        return fragmentList.get(fragmentName);
+        return todoListfragments.get(fragmentName);
     }
 
-    TodoListFragment getCurrentVisibleTodoList() {
+    TodoListFragment getVisibleTodoList() {
         return currentVisibleTodoListFragment;
     }
 
     public boolean doesFragmentExistWithName(String listNameToCheck) {
         TodoListFragment todoListFragmentToNotExist = getFragmentByNameOrNull(listNameToCheck);
         return todoListFragmentToNotExist == null;
+    }
+
+    public LinkedHashMap<String, TodoListFragment> getTodoListFragments() {
+        return todoListfragments;
     }
 }
