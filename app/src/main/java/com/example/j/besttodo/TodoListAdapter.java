@@ -40,18 +40,6 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
     }
 
     @Override
-    public void onViewRecycled(@NonNull MyViewHolder holder) {
-        if(isAddedToListAsNew(holder)) {
-            String defaultTodoItemText = mContext.getResources().getString(R.string.todoItemText);
-            holder.todoItemText.setText(defaultTodoItemText);
-        }
-    }
-
-    private boolean isAddedToListAsNew(MyViewHolder holder) {
-        return holder.getLayoutPosition() == -1;
-    }
-
-    @Override
     public int getItemCount() {
         return mTodoItemList.size();
     }
