@@ -85,6 +85,7 @@ public class TodoListStorageHandler {
         if (todoLists != null) {
             for(String todoList: todoLists) {
                 TodoListFragment todoListFragment = viewHandler.addNewTodoListFragment(todoList);
+                viewHandler.setVisibleFragmentByName(todoList);
                 addTodoItemsToListFromPrefs(todoListFragment, sharedPreferences);
             }
             setVisibleTodoListFromPrefs(sharedPreferences);
@@ -102,7 +103,7 @@ public class TodoListStorageHandler {
     private void addTodoItemsToListFromPrefs(TodoListFragment todoListFragment, SharedPreferences prefs) {
         Set<String> todoItemAttributeValues = prefs.getStringSet(todoListFragment.getName(), null);
         if (todoItemAttributeValues != null) {
-            for(String values: todoItemAttributeValues) {
+            for (String values: todoItemAttributeValues) {
                 TodoItem item = new TodoItem();
                 String todoText = resolveTodoText(values);
                 item.setText(todoText);

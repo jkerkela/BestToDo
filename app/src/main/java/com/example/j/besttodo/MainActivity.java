@@ -121,5 +121,4 @@ class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }
