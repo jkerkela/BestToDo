@@ -13,7 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
 import com.example.j.besttodo.util.ui.ViewHandler;
-import com.example.j.besttodo.util.ui.storage.TodoListStorageHandler;
+import com.example.j.besttodo.util.ui.storage.TodoListPersistentStorageHandler;
 
 class MainActivity extends AppCompatActivity {
 
@@ -22,7 +22,7 @@ class MainActivity extends AppCompatActivity {
 
     private ActionBar mSupportActionBar;
     private ViewHandler mViewHandler;
-    private TodoListStorageHandler storageHandler;
+    private TodoListPersistentStorageHandler storageHandler;
 
     TodoListFragmentsHandler mTodoListFragmentsHandler = new TodoListFragmentsHandler(getFragmentManager());
 
@@ -95,7 +95,8 @@ class MainActivity extends AppCompatActivity {
 
     private void initiateViewStorageHandler() {
         SharedPreferences sharedpreferences = getSharedPreferences(MY_SHARED_PREFS_NAME, MODE_PRIVATE);
-        this.storageHandler = new TodoListStorageHandler(
+        this.storageHandler = new TodoListPersistentStorageHandler(
+                this,
                 sharedpreferences,
                 mSupportActionBar,
                 mViewHandler,

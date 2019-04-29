@@ -1,6 +1,7 @@
 package com.example.j.besttodo;
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +16,7 @@ import com.example.j.besttodo.util.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TodoListFragment extends Fragment {
 
@@ -22,6 +24,7 @@ public class TodoListFragment extends Fragment {
     private TodoListAdapter mTodoListAdapter;
     private String name;
     private List<TodoItem> pendingTodoItems = new ArrayList<>();
+    private Drawable menuIcon;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -32,7 +35,7 @@ public class TodoListFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RecyclerView todoListView = getView().findViewById(R.id.todo_list_view);
+        RecyclerView todoListView = Objects.requireNonNull(getView()).findViewById(R.id.todo_list_view);
         attachAdapter(todoListView);
         addPendingTodoItemsToList();
     }
@@ -56,7 +59,7 @@ public class TodoListFragment extends Fragment {
     }
 
     public void addTodoItem(TodoItem item) {
-            if (mTodoListAdapter != null) {
+            if(mTodoListAdapter != null) {
                 mTodoItems.add(item);
                 mTodoListAdapter.notifyItemInserted(mTodoItems.size() - 1);
                 mTodoListAdapter.notifyDataSetChanged();
@@ -79,5 +82,13 @@ public class TodoListFragment extends Fragment {
 
     public List<TodoItem> getTodoItems() {
         return mTodoItems;
+    }
+
+    public void setMenuIcon(Drawable menuIcon) {
+        this.menuIcon = menuIcon;
+    }
+
+    public Drawable getMenuIcon() {
+        return menuIcon;
     }
 }

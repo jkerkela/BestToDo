@@ -200,12 +200,18 @@ public class ViewHandler {
             setTodoListNameButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MenuItem todoList = getTodoListIdentifierByName(todoListName);
-                    todoList.setIcon(todoIconToSet);
+                    setTodoListMenuIcon(todoListName, todoIconToSet);
                     iconChangePopupWindow.dismiss();
                 }
             });
         }
+    }
+
+    public void setTodoListMenuIcon(String todoListName, Drawable menuIcon) {
+        MenuItem todoListMenuItem = getTodoListIdentifierByName(todoListName);
+        todoListMenuItem.setIcon(menuIcon);
+        TodoListFragment todoList = mTodoListFragmentsHandler.getFragmentByNameOrNull(todoListName);
+        todoList.setMenuIcon(menuIcon);
     }
 
     private MenuItem getTodoListIdentifierByName(String todoListName) {

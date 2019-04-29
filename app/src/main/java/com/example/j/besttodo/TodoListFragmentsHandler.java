@@ -70,7 +70,7 @@ public class TodoListFragmentsHandler {
         }
     }
 
-    TodoListFragment getFragmentByNameOrNull(String fragmentName) {
+    public TodoListFragment getFragmentByNameOrNull(String fragmentName) {
         return todoListfragments.get(fragmentName);
     }
 
