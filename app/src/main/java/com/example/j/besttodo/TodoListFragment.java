@@ -20,8 +20,8 @@ import java.util.Objects;
 
 public class TodoListFragment extends Fragment {
 
-    private List<TodoItem> mTodoItems = new ArrayList<>();
-    private TodoListAdapter mTodoListAdapter;
+    private List<TodoItem> todoItems = new ArrayList<>();
+    private TodoListAdapter todoListAdapter;
     private String name;
     private List<TodoItem> pendingTodoItems = new ArrayList<>();
     private Drawable menuIcon;
@@ -41,13 +41,13 @@ public class TodoListFragment extends Fragment {
     }
 
     private void attachAdapter(RecyclerView todoListView) {
-        mTodoListAdapter = new TodoListAdapter(mTodoItems, getActivity());
+        todoListAdapter = new TodoListAdapter(todoItems, getActivity());
         todoListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         todoListView.addItemDecoration(itemDecorator);
         todoListView.setItemAnimator(new DefaultItemAnimator());
-        todoListView.setAdapter(mTodoListAdapter);
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mTodoListAdapter);
+        todoListView.setAdapter(todoListAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(todoListAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(todoListView);
     }
@@ -59,10 +59,10 @@ public class TodoListFragment extends Fragment {
     }
 
     public void addTodoItem(TodoItem item) {
-            if(mTodoListAdapter != null) {
-                mTodoItems.add(item);
-                mTodoListAdapter.notifyItemInserted(mTodoItems.size() - 1);
-                mTodoListAdapter.notifyDataSetChanged();
+            if(todoListAdapter != null) {
+                todoItems.add(item);
+                todoListAdapter.notifyItemInserted(todoItems.size() - 1);
+                todoListAdapter.notifyDataSetChanged();
             } else {
                 addPendingTodoItem(item);
             }
@@ -72,23 +72,13 @@ public class TodoListFragment extends Fragment {
         pendingTodoItems.add(item);
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
-    public List<TodoItem> getTodoItems() {
-        return mTodoItems;
-    }
+    public List<TodoItem> getTodoItems() { return todoItems; }
 
-    public void setMenuIcon(Drawable menuIcon) {
-        this.menuIcon = menuIcon;
-    }
+    public void setMenuIcon(Drawable menuIcon) { this.menuIcon = menuIcon; }
 
-    public Drawable getMenuIcon() {
-        return menuIcon;
-    }
+    public Drawable getMenuIcon() { return menuIcon; }
 }

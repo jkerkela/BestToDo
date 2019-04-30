@@ -12,8 +12,8 @@ import android.util.Base64;
 import com.example.j.besttodo.R;
 import com.example.j.besttodo.TodoItem;
 import com.example.j.besttodo.TodoListFragment;
-import com.example.j.besttodo.TodoListFragmentsHandler;
-import com.example.j.besttodo.util.ui.ViewHandler;
+import com.example.j.besttodo.util.ui.TodoListFragmentsHandler;
+import com.example.j.besttodo.util.ui.NavigationViewHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedHashMap;
@@ -30,7 +30,7 @@ public class TodoListPersistentStorageHandler {
     private static final String SHARED_PREFS_TODO_LIST_ICON_KEY_POST_FIX = "_ICON";
 
     private final SharedPreferences sharedPreferences;
-    private final ViewHandler viewHandler;
+    private final NavigationViewHandler navigationViewHandler;
     private final TodoListFragmentsHandler todoListFragmentsHandler;
     private final ActionBar supportActionBar;
     private final Activity activity;
@@ -43,12 +43,12 @@ public class TodoListPersistentStorageHandler {
     public TodoListPersistentStorageHandler(Activity activity,
                                             SharedPreferences sharedPreferences,
                                             ActionBar supportActionBar,
-                                            ViewHandler viewHandler,
+                                            NavigationViewHandler navigationViewHandler,
                                             TodoListFragmentsHandler todoListFragmentsHandler) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         this.supportActionBar = supportActionBar;
-        this.viewHandler = viewHandler;
+        this.navigationViewHandler = navigationViewHandler;
         this.todoListFragmentsHandler = todoListFragmentsHandler;
     }
 
@@ -63,11 +63,6 @@ public class TodoListPersistentStorageHandler {
         }
         saveVisibleFragmentToPrefs(sharedPrefEditor);
         sharedPrefEditor.apply();
-    }
-
-    private void saveVisibleFragmentToPrefs(SharedPreferences.Editor sharedPrefs) {
-        String visibleFragment = viewHandler.getVisibleFragmentName();
-        sharedPrefs.putString(SHARED_PREFS_VISIBLE_TODO_LISTS_KEY, visibleFragment);
     }
 
     private Set<String> getTodoListNames(LinkedHashMap<String, TodoListFragment> todoListFragments) {
@@ -95,6 +90,10 @@ public class TodoListPersistentStorageHandler {
         sharedPrefs.putStringSet(sharedPrefsKey, todoItemAttributes);
     }
 
+    private String constructTodoItemValues(TodoItem item) {
+        return item.getText().replace(",", "\\,") + "," + item.getSchedule();
+    }
+
     private String generateTodoListAttrPrefsKey(String todoListFragmentName, PrefsType prefsType) {
         switch(prefsType) {
             case TODO_ITEM:
@@ -104,10 +103,6 @@ public class TodoListPersistentStorageHandler {
             default:
                 return null;
         }
-    }
-
-    private String constructTodoItemValues(TodoItem item) {
-        return item.getText().replace(",", "\\,") + "," + item.getSchedule();
     }
 
     private void saveTodoListIconToPrefs(TodoListFragment todoListFragment, SharedPreferences.Editor sharedPrefs) {
@@ -128,12 +123,17 @@ public class TodoListPersistentStorageHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
+    private void saveVisibleFragmentToPrefs(SharedPreferences.Editor sharedPrefs) {
+        String visibleFragmentName = todoListFragmentsHandler.getVisibleFragment().getName();
+        sharedPrefs.putString(SHARED_PREFS_VISIBLE_TODO_LISTS_KEY, visibleFragmentName);
+    }
+
     public void loadTodoItemListsFromPrefs() {
         Set<String> todoLists = sharedPreferences.getStringSet(SHARED_PREFS_TODO_LISTS_KEY, null);
         if(todoLists != null) {
             for (String todoList: todoLists) {
-                TodoListFragment todoListFragment = viewHandler.addNewTodoListFragment(todoList);
-                viewHandler.setVisibleFragmentByName(todoList);
+                TodoListFragment todoListFragment = navigationViewHandler.addNewTodoListFragment(todoList);
+                todoListFragmentsHandler.setVisibleFragment(todoList);
                 addIconToTodoListMenuItem(todoList, sharedPreferences);
                 addTodoItemsToListFromPrefs(todoListFragment, sharedPreferences);
             }
@@ -146,7 +146,7 @@ public class TodoListPersistentStorageHandler {
         String todoItemIconValue = prefs.getString(sharedPrefsKey, null);
         if(todoItemIconValue != null) {
             Drawable icon = convertStringToDrawable(todoItemIconValue);
-            viewHandler.setTodoListMenuIcon(todoList, icon);
+            navigationViewHandler.setTodoListMenuIcon(todoList, icon);
         }
     }
 
@@ -154,14 +154,6 @@ public class TodoListPersistentStorageHandler {
         byte[] byteArray = Base64.decode(drawableAsString, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         return new BitmapDrawable(activity.getResources(), bitmap);
-    }
-
-    private void setVisibleTodoListFromPrefs(SharedPreferences prefs) {
-        String visibleTodoList = prefs.getString(SHARED_PREFS_VISIBLE_TODO_LISTS_KEY, null);
-        if(visibleTodoList != null) {
-            viewHandler.setVisibleFragmentByName(visibleTodoList);
-            supportActionBar.setTitle(visibleTodoList);
-        }
     }
 
     private void addTodoItemsToListFromPrefs(TodoListFragment todoListFragment, SharedPreferences prefs) {
@@ -193,5 +185,13 @@ public class TodoListPersistentStorageHandler {
             return intermediateValues[1];
         }
         return activity.getResources().getString(R.string.todoItemSchedulePlaceholder);
+    }
+
+    private void setVisibleTodoListFromPrefs(SharedPreferences prefs) {
+        String visibleTodoList = prefs.getString(SHARED_PREFS_VISIBLE_TODO_LISTS_KEY, null);
+        if(visibleTodoList != null) {
+            todoListFragmentsHandler.setVisibleFragment(visibleTodoList);
+            supportActionBar.setTitle(visibleTodoList);
+        }
     }
 }

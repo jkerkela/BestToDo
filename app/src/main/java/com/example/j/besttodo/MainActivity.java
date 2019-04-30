@@ -12,7 +12,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.RelativeLayout;
 
-import com.example.j.besttodo.util.ui.ViewHandler;
+import com.example.j.besttodo.util.ui.NavigationViewHandler;
+import com.example.j.besttodo.util.ui.TodoListFragmentsHandler;
 import com.example.j.besttodo.util.ui.storage.TodoListPersistentStorageHandler;
 
 class MainActivity extends AppCompatActivity {
@@ -20,27 +21,35 @@ class MainActivity extends AppCompatActivity {
     private static final String INIT_TODO_LIST_NAME = "TODO list";
     private static final String MY_SHARED_PREFS_NAME = "todo_app_prefs";
 
-    private ActionBar mSupportActionBar;
-    private ViewHandler mViewHandler;
+    private ActionBar actionBar;
+    private NavigationViewHandler navigationViewHandler;
     private TodoListPersistentStorageHandler storageHandler;
-
-    TodoListFragmentsHandler mTodoListFragmentsHandler = new TodoListFragmentsHandler(getFragmentManager());
+    private TodoListFragmentsHandler todoListFragmentsHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            initiateBaseFocusHolder();
-            initiateCustomToolbar();
-            initiateNavigationMenu();
-            initiateViewStorageHandler();
+        if(savedInstanceState == null) {
+            initiateTodoListFragmentHandler();
+            initiateViewComponents();
+            initiatePersistentStorageHandler();
             storageHandler.loadTodoItemListsFromPrefs();
         }
-        else if (mTodoListFragmentsHandler.getTodoListFragments().size() == 0) {
+        else if(todoListFragmentsHandler.getTodoListFragments().size() == 0) {
             addDefaultTodoList();
         }
         initiateToDoItemAdderButton();
+    }
+
+    private void initiateTodoListFragmentHandler() {
+        this.todoListFragmentsHandler = new TodoListFragmentsHandler(getFragmentManager());
+    }
+
+    private void initiateViewComponents() {
+        initiateBaseFocusHolder();
+        initiateCustomToolbar();
+        initiateNavigationMenu();
     }
 
     @ Override
@@ -53,7 +62,7 @@ class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                mViewHandler.openNavigationDrawer();
+                navigationViewHandler.openNavigationDrawer();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -79,34 +88,34 @@ class MainActivity extends AppCompatActivity {
     }
 
     private void initiateNavigationMenu() {
-        mViewHandler = new ViewHandler(this, mTodoListFragmentsHandler, mSupportActionBar);
-        mViewHandler.initiateNavigationView();
+        navigationViewHandler = new NavigationViewHandler(this, todoListFragmentsHandler, actionBar);
+        navigationViewHandler.initiateNavigationView();
     }
 
     private void initiateCustomToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-        mSupportActionBar = getSupportActionBar();
-        if (mSupportActionBar != null) {
-            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
-            mSupportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
     }
 
-    private void initiateViewStorageHandler() {
+    private void initiatePersistentStorageHandler() {
         SharedPreferences sharedpreferences = getSharedPreferences(MY_SHARED_PREFS_NAME, MODE_PRIVATE);
         this.storageHandler = new TodoListPersistentStorageHandler(
                 this,
                 sharedpreferences,
-                mSupportActionBar,
-                mViewHandler,
-                mTodoListFragmentsHandler);
+                actionBar,
+                navigationViewHandler,
+                todoListFragmentsHandler);
     }
 
     private void addDefaultTodoList() {
-        mViewHandler.addNewTodoListFragment(INIT_TODO_LIST_NAME);
-        mViewHandler.setVisibleFragmentByName(INIT_TODO_LIST_NAME);
-        mSupportActionBar.setTitle(INIT_TODO_LIST_NAME);
+        navigationViewHandler.addNewTodoListFragment(INIT_TODO_LIST_NAME);
+        todoListFragmentsHandler.setVisibleFragment(INIT_TODO_LIST_NAME);
+        actionBar.setTitle(INIT_TODO_LIST_NAME);
     }
 
     private void initiateToDoItemAdderButton() {
@@ -114,7 +123,7 @@ class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TodoListFragment currentVisibleTodoList = mTodoListFragmentsHandler.getVisibleTodoList();
+                TodoListFragment currentVisibleTodoList = todoListFragmentsHandler.getVisibleFragment();
                 TodoItem item = new TodoItem();
                 item.setText(getResources().getString(R.string.todoItemText));
                 item.setSchedule(getResources().getString(R.string.todoItemSchedulePlaceholder));

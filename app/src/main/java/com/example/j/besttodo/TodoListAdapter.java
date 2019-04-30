@@ -23,12 +23,12 @@ import java.util.List;
 public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyViewHolder>
         implements ItemTouchHelperAdapter {
 
-    private final List<TodoItem> mTodoItemList;
-    private Context mContext;
+    private final List<TodoItem> todoItemList;
+    private Context context;
 
     TodoListAdapter(List<TodoItem> todoItemList, Activity context) {
-        mTodoItemList = todoItemList;
-        mContext = context;
+        this.todoItemList = todoItemList;
+        this.context = context;
     }
 
     @NonNull
@@ -41,18 +41,18 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return mTodoItemList.size();
+        return todoItemList.size();
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
-                Collections.swap(mTodoItemList, i, i + 1);
+                Collections.swap(todoItemList, i, i + 1);
             }
         } else {
             for (int i = fromPosition; i > toPosition; i--) {
-                Collections.swap(mTodoItemList, i, i - 1);
+                Collections.swap(todoItemList, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -61,13 +61,13 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
 
     @Override
     public void onItemDismiss(int position) {
-        mTodoItemList.remove(position);
+        todoItemList.remove(position);
         notifyItemRemoved(position);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        TodoItem todoItem = mTodoItemList.get(position);
+        TodoItem todoItem = todoItemList.get(position);
         String existingText = todoItem.getText();
         holder.todoItemText.setText(existingText);
         String existingSchedule = todoItem.getSchedule();
@@ -87,7 +87,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if(!hasFocus) {
-                        mTodoItemList.get(getLayoutPosition()).setText(todoItemText.getText().toString());
+                        todoItemList.get(getLayoutPosition()).setText(todoItemText.getText().toString());
                     }
                 }
             });
@@ -96,7 +96,7 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             todoItemActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE);
                     if (layoutInflater != null) {
                         View popupView = layoutInflater.inflate(R.layout.todo_item_popup, null);
                         PopupWindow todoItemPopup = PopUpProvider.providePopUpWindowOnViewAtClickLocation(popupView, view);
@@ -111,10 +111,10 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.MyView
             todoItemSetDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TodoItem activeTodoItem = mTodoItemList.get(getLayoutPosition());
+                    TodoItem activeTodoItem = todoItemList.get(getLayoutPosition());
                     DatePickerFragment datePickerFragment = new DatePickerFragment();
                     datePickerFragment.setTodoItemHandle(activeTodoItem, todoItemDate);
-                    FragmentManager fragmentManager = ((FragmentActivity) mContext).getSupportFragmentManager();
+                    FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                     datePickerFragment.show(fragmentManager, "date picker");
                     todoItemPopup.dismiss();
                 }

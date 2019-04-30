@@ -2,7 +2,6 @@ package com.example.j.besttodo;
 
 public class TodoItem {
 
-
     private String todoItemText;
     private String schedule;
 

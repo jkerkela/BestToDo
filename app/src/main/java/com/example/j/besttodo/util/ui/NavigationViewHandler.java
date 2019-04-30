@@ -18,77 +18,48 @@ import android.widget.PopupWindow;
 
 import com.example.j.besttodo.R;
 import com.example.j.besttodo.TodoListFragment;
-import com.example.j.besttodo.TodoListFragmentsHandler;
 
 import java.util.ArrayList;
 
-public class ViewHandler {
+public class NavigationViewHandler {
 
     private final static String NON_UNIQUE_NAME_ERROR_TEXT = "TODO List with set name already exists!";
-    private final NavigationView mNavigationView;
-    private final LayoutInflater mLayoutInflater;
-    private final Context mContext;
-    private final ActionBar mActionBar;
-    private DrawerLayout mDrawerLayout;
-    private TodoListFragmentsHandler mTodoListFragmentsHandler;
+    private final NavigationView navigationView;
+    private final LayoutInflater layoutInflater;
+    private final Context context;
+    private final ActionBar actionBar;
+    private DrawerLayout drawerLayout;
+    private TodoListFragmentsHandler todoListFragmentsHandler;
 
-    public ViewHandler(Activity context, TodoListFragmentsHandler todoListFragmentsHandler, ActionBar actionBar) {
-        mContext = context;
-        mNavigationView = context.findViewById(R.id.nav_view);
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mTodoListFragmentsHandler = todoListFragmentsHandler;
-        mDrawerLayout = context.findViewById(R.id.drawer_layout);
-        mActionBar = actionBar;
+    public NavigationViewHandler(Activity context, TodoListFragmentsHandler todoListFragmentsHandler, ActionBar actionBar) {
+        this.context = context;
+        navigationView = context.findViewById(R.id.nav_view);
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.todoListFragmentsHandler = todoListFragmentsHandler;
+        drawerLayout = context.findViewById(R.id.drawer_layout);
+        this.actionBar = actionBar;
     }
 
     public void initiateNavigationView() {
-        mNavigationView.setNavigationItemSelectedListener(
+        navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         if (menuItem.getGroupId() == R.id.group_todo_list_items) {
                             String todoListName = (String) menuItem.getTitle();
-                            View popupView = mLayoutInflater.inflate(R.layout.todo_list_popup, null);
+                            View popupView = layoutInflater.inflate(R.layout.todo_list_popup, null);
                             PopupWindow todoListActionPopupWindow = PopUpProvider.providePopUpWindowOnItemLocation(popupView);
                             addListenerToTodoListActionsPopupWindow(popupView, todoListActionPopupWindow, todoListName);
                         } else if (menuItem.getItemId() == R.id.add_new_todo_list) {
-                            View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
+                            View popupView = layoutInflater.inflate(R.layout.text_input_popup, null);
                             PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
-                            PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
+                            PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, context);
                             addListenerToNewTodoListNamingPopupWindow(popupView, textInputPopupWindow);
                         }
                         return true;
                     }
                 }
         );
-    }
-
-    public TodoListFragment addNewTodoListFragment(String todoListName) {
-        TodoListFragment listFragment = new TodoListFragment();
-        listFragment.setName(todoListName);
-        mTodoListFragmentsHandler.addFragment(listFragment);
-        addTodoListToNavigationView(todoListName);
-        return listFragment;
-    }
-
-    public void setVisibleFragmentByName(String todoListFragmentName) {
-        mTodoListFragmentsHandler.setVisibleFragment(todoListFragmentName);
-    }
-
-    public String getVisibleFragmentName(){
-        return mTodoListFragmentsHandler.getVisibleFragment().getName();
-    }
-    public void openNavigationDrawer() {
-        mDrawerLayout.openDrawer(GravityCompat.START);
-    }
-
-    private void addTodoListToNavigationView(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
-        int todoListIdentifier = todoListName.hashCode();
-        navigationViewMenu.add(R.id.group_todo_list_items,
-                todoListIdentifier,
-                Menu.NONE,
-                todoListName);
     }
 
     private void addListenerToTodoListActionsPopupWindow(View popupView, final PopupWindow todoListActionPopupWindow, final String todoListName) {
@@ -98,7 +69,7 @@ public class ViewHandler {
             public void onClick(View view) {
                 todoListActionPopupWindow.dismiss();
                 setCurrentTodoList(todoListName);
-                mDrawerLayout.closeDrawers();
+                drawerLayout.closeDrawers();
             }
         });
         ImageButton renameTodoListButton = popupView.findViewById(R.id.RenameTodoListButton);
@@ -128,14 +99,14 @@ public class ViewHandler {
     }
 
     private void setCurrentTodoList(String todoListName) {
-        setVisibleFragmentByName(todoListName);
-        mActionBar.setTitle(todoListName);
+        todoListFragmentsHandler.setVisibleFragment(todoListName);
+        actionBar.setTitle(todoListName);
     }
 
     private void renameTodoList(String todoListName) {
-        View popupView = mLayoutInflater.inflate(R.layout.text_input_popup, null);
+        View popupView = layoutInflater.inflate(R.layout.text_input_popup, null);
         PopupWindow textInputPopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
-        PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, mContext);
+        PopUpProvider.dimBackgroundOfPopup(textInputPopupWindow, context);
         addListenerToRenameTodoListNamingPopupWindow(popupView, textInputPopupWindow, todoListName);
     }
 
@@ -151,14 +122,14 @@ public class ViewHandler {
                     renameTodoListFragment(todoListName, InputText);
                     textInputPopupWindow.dismiss();
                 } else {
-                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, mContext);
+                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, context);
                 }
             }
         });
     }
 
     private boolean isTodoListNameUnique(String listNameToCheck) {
-        return mTodoListFragmentsHandler.doesFragmentExistWithName(listNameToCheck);
+        return todoListFragmentsHandler.doesFragmentExistWithName(listNameToCheck);
     }
 
     private void renameTodoListOnNavigationView(String oldTodoListName, String newTodoListName) {
@@ -166,25 +137,42 @@ public class ViewHandler {
         addTodoListToNavigationView(newTodoListName);
     }
 
+    public TodoListFragment addNewTodoListFragment(String todoListName) {
+        TodoListFragment listFragment = new TodoListFragment();
+        listFragment.setName(todoListName);
+        todoListFragmentsHandler.addFragment(listFragment);
+        addTodoListToNavigationView(todoListName);
+        return listFragment;
+    }
+
+    private void addTodoListToNavigationView(String todoListName) {
+        Menu navigationViewMenu = navigationView.getMenu();
+        int todoListIdentifier = todoListName.hashCode();
+        navigationViewMenu.add(R.id.group_todo_list_items,
+                todoListIdentifier,
+                Menu.NONE,
+                todoListName);
+    }
+
     private void renameTodoListFragment(String oldTodoListName, String newTodoListName) {
-        mTodoListFragmentsHandler.renameFragment(oldTodoListName, newTodoListName);
+        todoListFragmentsHandler.renameFragment(oldTodoListName, newTodoListName);
     }
 
     private void removeTodoListFragment(String todoListName) {
         removeTodoListFromNavigationView(todoListName);
-        mTodoListFragmentsHandler.removeFragment(todoListName);
+        todoListFragmentsHandler.removeFragment(todoListName);
     }
 
     private void removeTodoListFromNavigationView(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
+        Menu navigationViewMenu = navigationView.getMenu();
         int todoListIdentifier = todoListName.hashCode();
         navigationViewMenu.removeItem(todoListIdentifier);
     }
 
     private void setTodoListIcon(String todoListName) {
-        View popupView = mLayoutInflater.inflate(R.layout.todo_list_icon_popup, null);
+        View popupView = layoutInflater.inflate(R.layout.todo_list_icon_popup, null);
         final PopupWindow iconChangePopupWindow = PopUpProvider.providePopUpWindowOnViewAtCenter(popupView);
-        PopUpProvider.dimBackgroundOfPopup(iconChangePopupWindow, mContext);
+        PopUpProvider.dimBackgroundOfPopup(iconChangePopupWindow, context);
         ArrayList<View> iconButtons = popupView.getTouchables();
         addListenerToPopUpIconButtons(iconButtons, popupView, todoListName, iconChangePopupWindow);
     }
@@ -210,12 +198,12 @@ public class ViewHandler {
     public void setTodoListMenuIcon(String todoListName, Drawable menuIcon) {
         MenuItem todoListMenuItem = getTodoListIdentifierByName(todoListName);
         todoListMenuItem.setIcon(menuIcon);
-        TodoListFragment todoList = mTodoListFragmentsHandler.getFragmentByNameOrNull(todoListName);
+        TodoListFragment todoList = todoListFragmentsHandler.getFragmentByNameOrNull(todoListName);
         todoList.setMenuIcon(menuIcon);
     }
 
     private MenuItem getTodoListIdentifierByName(String todoListName) {
-        Menu navigationViewMenu = mNavigationView.getMenu();
+        Menu navigationViewMenu = navigationView.getMenu();
         int todoListIdentifier = todoListName.hashCode();
         return navigationViewMenu.findItem(todoListIdentifier);
     }
@@ -231,9 +219,13 @@ public class ViewHandler {
                     addNewTodoListFragment(InputText);
                     textInputPopupWindow.dismiss();
                 } else {
-                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, mContext);
+                    ToastProvider.showToastAtCenterOfScreen(NON_UNIQUE_NAME_ERROR_TEXT, context);
                 }
             }
         });
+    }
+
+    public void openNavigationDrawer() {
+        drawerLayout.openDrawer(GravityCompat.START);
     }
 }

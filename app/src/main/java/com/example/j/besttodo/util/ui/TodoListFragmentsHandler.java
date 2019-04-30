@@ -1,21 +1,25 @@
-package com.example.j.besttodo;
+package com.example.j.besttodo.util.ui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+
+import com.example.j.besttodo.R;
+import com.example.j.besttodo.TodoListFragment;
 
 import java.util.LinkedHashMap;
 
 public class TodoListFragmentsHandler {
 
-    private LinkedHashMap<String, TodoListFragment> todoListfragments = new LinkedHashMap<>();
-    private FragmentManager fragmentManager;
-    private TodoListFragment currentVisibleTodoListFragment = null;
+    private final FragmentManager fragmentManager;
 
-    TodoListFragmentsHandler(FragmentManager fragmentManager) {
+    private LinkedHashMap<String, TodoListFragment> todoListFragments = new LinkedHashMap<>();
+    private TodoListFragment currentVisibleTodoListFragment;
+
+    public TodoListFragmentsHandler(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
-    public void addFragment(TodoListFragment listFragment) {
+    void addFragment(TodoListFragment listFragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
                 .add(R.id.listFragmentContainer, listFragment)
@@ -25,10 +29,10 @@ public class TodoListFragmentsHandler {
 
     private void addFragmentEntry(TodoListFragment todoListFragment) {
         String fragmentName = todoListFragment.getName();
-        todoListfragments.put(fragmentName, todoListFragment);
+        todoListFragments.put(fragmentName, todoListFragment);
     }
 
-    public void removeFragment(String fragmentName) {
+    void removeFragment(String fragmentName) {
         TodoListFragment todoListFragment = getFragmentByNameOrNull(fragmentName);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction
@@ -38,10 +42,10 @@ public class TodoListFragmentsHandler {
     }
 
     private void removeFragmentEntry(String fragmentName) {
-        todoListfragments.remove(fragmentName);
+        todoListFragments.remove(fragmentName);
     }
 
-    public void renameFragment(String oldTodoListName, String newTodoListName) {
+    void renameFragment(String oldTodoListName, String newTodoListName) {
         TodoListFragment fragmentToRename = getFragmentByNameOrNull(oldTodoListName);
         removeFragmentEntry(oldTodoListName);
         fragmentToRename.setName(newTodoListName);
@@ -58,11 +62,8 @@ public class TodoListFragmentsHandler {
         currentVisibleTodoListFragment = todoListFragment;
     }
 
-    public TodoListFragment getVisibleFragment() {
-        return currentVisibleTodoListFragment;
-    }
     private void hideCurrentFragment() {
-        if (currentVisibleTodoListFragment != null) {
+        if(currentVisibleTodoListFragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction
                     .hide(currentVisibleTodoListFragment)
@@ -70,20 +71,18 @@ public class TodoListFragmentsHandler {
         }
     }
 
-    public TodoListFragment getFragmentByNameOrNull(String fragmentName) {
-        return todoListfragments.get(fragmentName);
-    }
-
-    TodoListFragment getVisibleTodoList() {
+    public TodoListFragment getVisibleFragment() {
         return currentVisibleTodoListFragment;
     }
 
-    public boolean doesFragmentExistWithName(String listNameToCheck) {
+    TodoListFragment getFragmentByNameOrNull(String fragmentName) {
+        return todoListFragments.get(fragmentName);
+    }
+
+    boolean doesFragmentExistWithName(String listNameToCheck) {
         TodoListFragment todoListFragmentToNotExist = getFragmentByNameOrNull(listNameToCheck);
         return todoListFragmentToNotExist == null;
     }
 
-    public LinkedHashMap<String, TodoListFragment> getTodoListFragments() {
-        return todoListfragments;
-    }
+    public LinkedHashMap<String, TodoListFragment> getTodoListFragments() { return todoListFragments; }
 }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.example.j.besttodo.TodoItem;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DatePickerFragment extends DialogFragment {
 
@@ -26,7 +27,7 @@ public class DatePickerFragment extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+        return new DatePickerDialog(Objects.requireNonNull(getActivity()), dateSetListener, year, month, day);
     }
 
     public void setTodoItemHandle(TodoItem todoItem, EditText todoItemDate) {
