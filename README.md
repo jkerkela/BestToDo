@@ -2,4 +2,4 @@
 
 ## Info ##
 
-Repository for playing around with Java/Android via best TODO list
+TODO list app implementation for Android with Java
